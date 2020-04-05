@@ -7,7 +7,7 @@ module.exports = {
   },
   Mutation: {
     authenticate: async (_, __, { dataSources }) => {
-      return await dataSources.spotifyAccountsAPI.getAuthToken();
+      return await dataSources.spotifyAccountsAPI.getAuthToken()
     },
   },
 }

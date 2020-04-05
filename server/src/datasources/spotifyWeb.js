@@ -1,11 +1,9 @@
-// TODO: Add error handling with try catches
-
-const { RESTDataSource } = require('apollo-datasource-rest');
+const { RESTDataSource } = require('apollo-datasource-rest')
 
 class SpotifyWebAPI extends RESTDataSource {
   constructor() {
-    super();
-    this.baseURL = 'https://api.spotify.com/v1/';
+    super()
+    this.baseURL = 'https://api.spotify.com/v1/'
   }
 
   willSendRequest(request) {
@@ -63,4 +61,4 @@ class SpotifyWebAPI extends RESTDataSource {
   }
 }
 
-module.exports = SpotifyWebAPI;
+module.exports = SpotifyWebAPI

@@ -1,9 +1,9 @@
-const { RESTDataSource } = require('apollo-datasource-rest');
+const { RESTDataSource } = require('apollo-datasource-rest')
 
 class SpotifyAccountsAPI extends RESTDataSource {
   constructor() {
-    super();
-    this.baseURL = 'https://accounts.spotify.com/';
+    super()
+    this.baseURL = 'https://accounts.spotify.com/'
   }
 
   willSendRequest(request) {
@@ -24,4 +24,4 @@ class SpotifyAccountsAPI extends RESTDataSource {
   }
 }
 
-module.exports = SpotifyAccountsAPI;
+module.exports = SpotifyAccountsAPI
