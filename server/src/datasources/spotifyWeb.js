@@ -14,26 +14,15 @@ class SpotifyWebAPI extends RESTDataSource {
 
   async getAudioAnalysis(trackId) {
     try {
-      const { track, sections: spotifySections } = await this.get(`audio-analysis/${trackId.trackId}`)
       const {
-        duration,
-        key,
-        loudness,
-        mode,
-        tempo,
-        time_signature: timeSignature
-      } = track
+        track: spotifyTrack,
+        sections: spotifySections
+      } = await this.get(`audio-analysis/${trackId.trackId}`)
+      const track = this.transformTrack(spotifyTrack)
       const sections = this.transformSections(spotifySections)
       
       return { 
-        track : {
-          duration,
-          key,
-          loudness,
-          mode,
-          tempo,
-          timeSignature
-        },
+        track,
         sections,
       }
     } catch(e) {
@@ -41,15 +30,36 @@ class SpotifyWebAPI extends RESTDataSource {
     }
   }
 
-  transformSections(sections) {
-    return sections.map(section => {
-      const { key, mode, time_signature: timeSignature } = section 
+  transformSections(spotifySections) {
+    return spotifySections.map(section => {
+      const { key, mode, time_signature: timeSignature } = section
+
       return {
         key,
         mode,
         timeSignature
       }
     })
+  }
+
+  transformTrack(spotifyTrack) {
+    const {
+      duration,
+      key,
+      loudness,
+      mode,
+      tempo,
+      time_signature: timeSignature
+    } = spotifyTrack
+
+    return {
+      duration,
+      key,
+      loudness,
+      mode,
+      tempo,
+      timeSignature
+    }
   }
 }
 
