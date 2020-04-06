@@ -1,6 +1,7 @@
 {
-  "name": "audio-snowflake-v2",
+  "name": "audio-snowflake-server",
   "version": "1.0.0",
+  "private": true,
   "description": "",
   "main": "src/index.js",
   "scripts": {
