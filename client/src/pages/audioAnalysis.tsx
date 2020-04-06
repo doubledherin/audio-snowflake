@@ -34,7 +34,7 @@ const AudioAnalysis: React.FC<AudioAnalysisProps> = ({ trackId}) => {
     data, 
     loading, 
     error
-  } = useQuery(GET_AUDIO_ANALYSIS, { variables: { trackId } });
+  } = useQuery(GET_AUDIO_ANALYSIS, { variables: { trackId: "3JIxjvbbDrA9ztYlNcp3yL" } }) // TODO: Remove hardcoded track id
 
   if (loading) return <Loading />;
   if (error) return <p>ERROR</p>;
@@ -42,11 +42,10 @@ const AudioAnalysis: React.FC<AudioAnalysisProps> = ({ trackId}) => {
 
   return (
     <Fragment>
-      {data && console.log("DATA: ", data)}
       {data && (
           <Button
             onClick={() =>
-              console.log("Click!")
+              console.log("Audio Analysis: ", data.audioAnalysis)
             }
           >
             Here's a button
