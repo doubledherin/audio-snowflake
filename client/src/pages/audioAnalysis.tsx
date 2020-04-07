@@ -48,7 +48,7 @@ const AudioAnalysis: React.FC<AudioAnalysisProps> = ({ trackId}) => {
               console.log("Audio Analysis: ", data.audioAnalysis)
             }
           >
-            Here's a button
+            Log Audio Analysis
           </Button>
         )
       }

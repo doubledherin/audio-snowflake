@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import { Router } from '@reach/router'
 
 import AudioAnalysis from './audioAnalysis'
-import { Button, Footer, PageContainer } from '../components'
+import { Button, PageContainer } from '../components'
 
 export default function Pages() {
   return (
@@ -12,7 +12,6 @@ export default function Pages() {
           <AudioAnalysis path="/" />
         </Router>
       </PageContainer>
-      <Footer />
     </Fragment>
   )
 }
