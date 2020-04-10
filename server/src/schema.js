@@ -23,7 +23,8 @@ const typeDefs = gql`
 
   type Query {
     audioAnalysis(
-      trackId: String
+      title: String
+      artist: String
     ): AudioAnalysis
   }
 

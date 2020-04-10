@@ -1,8 +1,8 @@
 
 module.exports = {
   Query: {
-    audioAnalysis: async (_, { trackId }, { dataSources }) => {
-      return await dataSources.spotifyWebAPI.getAudioAnalysis({ trackId })
+    audioAnalysis: async (_, { title, artist }, { dataSources }) => {
+      return await dataSources.spotifyWebAPI.getAudioAnalysis(title, artist)
     }
   },
   Mutation: {
