@@ -1,4 +1,10 @@
 const { RESTDataSource } = require('apollo-datasource-rest')
+const {
+  filterTracksOnArtist,
+  sortFilteredTracksByPopularity,
+  transformSections,
+  transformTrack
+} = require('../utils')
 
 class SpotifyWebAPI extends RESTDataSource {
   constructor() {
@@ -10,7 +16,7 @@ class SpotifyWebAPI extends RESTDataSource {
     request.headers.set('Authorization', this.context.token)
   }
 
-  async searchTracksByTitle(title) {
+  async getTracksByTitle(title) {
     try {
       const response = await this.get(`search?q=${encodeURIComponent(title)}&type=track`)
       return response
@@ -19,49 +25,37 @@ class SpotifyWebAPI extends RESTDataSource {
     }
   }
 
-  filterTracksOnArtist(tracks, artist) {
-    return tracks.filter(track => {
-      return this.trackIncludesArtist(track, artist)
-    })
-  }
-
-  trackIncludesArtist(track, artist) {
-    const includesArtist = track.artists.filter(a => {
-      return a.name === artist
-    })
-    return includesArtist !== undefined && includesArtist.length !== 0
-  }
-
-  sortFilteredTracksByPopularity(filteredTracks) {
-    return filteredTracks.sort(this.comparePopularity)
-  }
-
-  comparePopularity(trackA, trackB) {
-    if (trackA.popularity > trackB.popularity) {
-      return -1
+  async getTitleAndArtistBySpotifyId(spotifyId) {
+    try {
+      const response = await this.get(`tracks/${spotifyId}`)
+      if (response) {
+        const { name: title, artists } = response
+        return { title, artist: artists.map(_ => _.name).join(' & ') }
+      } else {
+        console.log("NO RESULTS FOR THAT SPOTIFY ID") // TODO: Read up on Apollo error handling
+      }
+    } catch(e) {
+      console.log("ERROR!", e) // TODO: Read up on Apollo error handling
     }
-    if (trackA.popularity < trackB.popularity) {
-      return 1
-    }
-    return 0
   }
 
-
-  async getAudioAnalysis(title, artist) {
-    let response = await this.searchTracksByTitle(title)
-    const filtered = this.filterTracksOnArtist(response.tracks.items, artist)
-    const sorted = this.sortFilteredTracksByPopularity(filtered)
-    const selectedTrack = sorted[0]
-    const spotifyId = selectedTrack.id
+  async getAudioAnalysisBySpotifyId(spotifyId) {
+    const { title, artist } = await this.getTitleAndArtistBySpotifyId(spotifyId)
     try {
       const {
         track: spotifyTrack,
         sections: spotifySections
       } = await this.get(`audio-analysis/${spotifyId}`)
-      const track = this.transformTrack(spotifyTrack)
-      const sections = this.transformSections(spotifySections)
-      
-      return { 
+
+      if (!spotifyTrack) {
+        console.log("ERROR: COULD NOT FIND A TRACK for SPOTIFY ID: ", spotifyId)  // TODO: Read up on Apollo error handling
+      }
+      const track = transformTrack(spotifyTrack)
+      const sections = transformSections(spotifySections)
+
+      return {
+        artist,
+        title,
         track,
         sections,
       }
@@ -70,36 +64,41 @@ class SpotifyWebAPI extends RESTDataSource {
     }
   }
 
-  transformSections(spotifySections) {
-    return spotifySections.map(section => {
-      const { key, mode, time_signature: timeSignature } = section
-
-      return {
-        key,
-        mode,
-        timeSignature
+  //TO DO: ADD Album
+  async getAudioAnalysis(spotifyId, title, artist) {
+    if (spotifyId) {
+      return this.getAudioAnalysisBySpotifyId(spotifyId)
+    } else {
+      let response = await this.getTracksByTitle(title)
+      if (response && response.tracks && (response.tracks.items !== [])) {
+        const filtered = filterTracksOnArtist(response.tracks.items, artist)
+        const sorted = sortFilteredTracksByPopularity(filtered)
+        const selectedTrack = sorted[0]
+        const spotifyId = selectedTrack.id
+        try {
+          const { title, artist } = await this.getAudioAnalysisBySpotifyId(spotifyId)
+        } catch(e) {
+          console.log("GOTTA HANDLE THIS")
+        }
+        try {
+          const {
+            track: spotifyTrack,
+            sections: spotifySections
+          } = await this.get(`audio-analysis/${spotifyId}`)
+          const track = transformTrack(spotifyTrack)
+          const sections = transformSections(spotifySections)
+          return {
+            artist,
+            title,
+            track,
+            sections,
+          }
+        } catch(e) {
+          console.log("ERROR", e) // TODO: Read up on Apollo error handling
+        }
+      } else {
+        console.log("COULD NOT FIND SONGS TO MATCH INPUT") // TODO: Handle this
       }
-    })
-  }
-
-  transformTrack(spotifyTrack) {
-    const {
-      duration,
-      key,
-      loudness,
-      name,
-      mode,
-      tempo,
-      time_signature: timeSignature
-    } = spotifyTrack
-
-    return {
-      duration,
-      key,
-      loudness,
-      mode,
-      tempo,
-      timeSignature
     }
   }
 }

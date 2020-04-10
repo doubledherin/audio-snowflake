@@ -2,6 +2,8 @@ const { gql } = require('apollo-server')
 
 const typeDefs = gql`
   type AudioAnalysis {
+    artist: String
+    title: String
     track: Track
     sections: [Section]
   }
@@ -23,8 +25,12 @@ const typeDefs = gql`
 
   type Query {
     audioAnalysis(
+      spotifyId: String
       title: String
       artist: String
+    ): AudioAnalysis
+    audioAnalysisBySpotifyId(
+      spotifyId: String!
     ): AudioAnalysis
   }
 
