@@ -11,18 +11,17 @@ function filterTracksOnArtist(tracks, artist) {
   })
 }
 
+// Popularity is an int ranging from 100 to 0, with 100 being the most popular
 function sortFilteredTracksByPopularity(filteredTracks) {
-  return filteredTracks.sort(comparePopularity)
-}
-
-function comparePopularity(trackA, trackB) {
-  if (trackA.popularity > trackB.popularity) {
-    return -1
-  }
-  if (trackA.popularity < trackB.popularity) {
-    return 1
-  }
-  return 0
+  return filteredTracks.sort((trackA, trackB) => {
+    if (trackA.popularity > trackB.popularity) {
+      return -1
+    }
+    if (trackA.popularity < trackB.popularity) {
+      return 1
+    }
+    return 0
+  })
 }
 
 function transformSections(spotifySections) {
@@ -64,4 +63,3 @@ module.exports = {
   transformSections, 
   transformTrack
 }
-
