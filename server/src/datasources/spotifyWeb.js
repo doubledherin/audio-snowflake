@@ -1,4 +1,5 @@
 const { RESTDataSource } = require('apollo-datasource-rest')
+
 const {
   filterTracksOnArtist,
   sortFilteredTracksByPopularity,
@@ -40,7 +41,6 @@ class SpotifyWebAPI extends RESTDataSource {
   }
 
   async getAudioAnalysisBySpotifyId(spotifyId) {
-    const { title, artist } = await this.getTitleAndArtistBySpotifyId(spotifyId)
     try {
       const {
         track: spotifyTrack,
@@ -50,17 +50,28 @@ class SpotifyWebAPI extends RESTDataSource {
       if (!spotifyTrack) {
         console.log("ERROR: COULD NOT FIND A TRACK for SPOTIFY ID: ", spotifyId)  // TODO: Read up on Apollo error handling
       }
+
+      return await this.transformAudioAnalysis(spotifyId, spotifyTrack, spotifySections)
+
+    } catch(e) {
+      console.log("ERROR", e) // TODO: Read up on Apollo error handling
+    }
+  }
+
+  async transformAudioAnalysis(spotifyId, spotifyTrack, spotifySections) {
+    try {
+      const { title, artist } = await this.getTitleAndArtistBySpotifyId(spotifyId)
       const track = transformTrack(spotifyTrack)
       const sections = transformSections(spotifySections)
-
+  
       return {
         artist,
         title,
         track,
         sections,
       }
-    } catch(e) {
-      console.log("ERROR", e) // TODO: Read up on Apollo error handling
+      } catch(e) {
+      console.log("ERROR", e)  // TODO: Read up on Apollo error handling
     }
   }
 
