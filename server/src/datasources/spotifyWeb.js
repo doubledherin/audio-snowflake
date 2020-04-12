@@ -2,7 +2,7 @@ const { RESTDataSource } = require('apollo-datasource-rest')
 
 const {
   filterTracksOnArtist,
-  sortFilteredTracksByPopularity,
+  sortTracksByPopularity,
   transformSections,
   transformTrack
 } = require('../utils')
@@ -17,10 +17,66 @@ class SpotifyWebAPI extends RESTDataSource {
     request.headers.set('Authorization', this.context.token)
   }
 
+  async getAudioAnalysis(userInputId, userInputTitle, userInputArtist) {
+    let id = userInputId ? userInputId : await this.getSpotifyId(userInputTitle, userInputArtist)
+    const { title, artist } = await this.getTitleAndArtistBySpotifyId(id)
+    try {
+      const { track: spotifyTrack, sections: spotifySections } = await this.getAudioAnalysisBySpotifyId(id)
+      const track = transformTrack(spotifyTrack)
+      const sections = transformSections(spotifySections)
+      return {
+        artist,
+        title,
+        track,
+        sections,
+      }
+    } catch(e) {
+      console.log("ERRORRRR", e)
+    }
+  }
+
+  async getSpotifyId(title, artist) {
+    if (title && artist) {
+      let response = await this.getTracksByTitle(title)
+      if (response && response.tracks && (response.tracks.items !== [])) {
+        const filtered = filterTracksOnArtist(response.tracks.items, artist)
+        const sorted = sortTracksByPopularity(filtered)
+        const selectedTrack = sorted[0]
+        return selectedTrack.id  
+      }
+    }
+    if (title) {
+      let response = await this.getTracksByTitle(title)
+      if (response && response.tracks && (response.tracks.items !== [])) {
+        const sorted = sortTracksByPopularity(response.tracks.items)
+        const selectedTrack = sorted[0]
+        return selectedTrack.id  
+      }
+    }
+    if (artist) {
+      let response = await this.getTracksByArtist(artist)
+      if (response && response.tracks && (response.tracks.items !== [])) {
+        const filtered = filterTracksOnArtist(response.tracks.items, artist) // THIS IS NECESSARY BECAUSE SPOTIFY DOESN"T RETURN EXACT HITS< JUST STAETS WTIH
+        const sorted = sortTracksByPopularity(filtered)
+        const selectedTrack = sorted[0]
+        return selectedTrack.id  
+      }
+    }
+    console.log("INPUT ERROR")
+
+  }
+
   async getTracksByTitle(title) {
     try {
-      const response = await this.get(`search?q=${encodeURIComponent(title)}&type=track`)
-      return response
+      return await this.get(`search?q=${encodeURIComponent(title)}&type=track`)
+    } catch (e) {
+      console.log("ERROR", e) // TODO: Read up on Apollo error handling
+    }
+  }
+
+  async getTracksByArtist(artist) {
+    try {
+      return await this.get(`search?q=artist:${encodeURIComponent(artist)}&type=track&limit=50 `)
     } catch (e) {
       console.log("ERROR", e) // TODO: Read up on Apollo error handling
     }
@@ -31,7 +87,8 @@ class SpotifyWebAPI extends RESTDataSource {
       const response = await this.get(`tracks/${spotifyId}`)
       if (response) {
         const { name: title, artists } = response
-        return { title, artist: artists.map(_ => _.name).join(' & ') }
+        const artist = artists.map(_ => _.name).join(' & ')
+        return { title, artist }
       } else {
         console.log("NO RESULTS FOR THAT SPOTIFY ID") // TODO: Read up on Apollo error handling
       }
@@ -72,44 +129,6 @@ class SpotifyWebAPI extends RESTDataSource {
       }
       } catch(e) {
       console.log("ERROR", e)  // TODO: Read up on Apollo error handling
-    }
-  }
-
-  //TO DO: ADD Album
-  async getAudioAnalysis(spotifyId, title, artist) {
-    if (spotifyId) {
-      return this.getAudioAnalysisBySpotifyId(spotifyId)
-    } else {
-      let response = await this.getTracksByTitle(title)
-      if (response && response.tracks && (response.tracks.items !== [])) {
-        const filtered = filterTracksOnArtist(response.tracks.items, artist)
-        const sorted = sortFilteredTracksByPopularity(filtered)
-        const selectedTrack = sorted[0]
-        const spotifyId = selectedTrack.id
-        try {
-          const { title, artist } = await this.getAudioAnalysisBySpotifyId(spotifyId)
-        } catch(e) {
-          console.log("GOTTA HANDLE THIS")
-        }
-        try {
-          const {
-            track: spotifyTrack,
-            sections: spotifySections
-          } = await this.get(`audio-analysis/${spotifyId}`)
-          const track = transformTrack(spotifyTrack)
-          const sections = transformSections(spotifySections)
-          return {
-            artist,
-            title,
-            track,
-            sections,
-          }
-        } catch(e) {
-          console.log("ERROR", e) // TODO: Read up on Apollo error handling
-        }
-      } else {
-        console.log("COULD NOT FIND SONGS TO MATCH INPUT") // TODO: Handle this
-      }
     }
   }
 }
