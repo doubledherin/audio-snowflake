@@ -29,8 +29,14 @@ const typeDefs = gql`
     artist: String
   }
 
+  type TrackNotFoundError {
+    message: String!
+  }
+
+  union SnowflakeDataResult = SnowflakeData | TrackNotFoundError
+
   type Query {
-    snowflakeData(input: SnowflakeInput): SnowflakeData
+    snowflakeData(input: SnowflakeInput): SnowflakeDataResult
   }
 
   type Mutation {
