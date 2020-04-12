@@ -24,13 +24,10 @@ const typeDefs = gql`
   }
 
   type Query {
-    audioAnalysis(
+    snowflakeData(
       spotifyId: String
       title: String
       artist: String
-    ): AudioAnalysis
-    audioAnalysisBySpotifyId(
-      spotifyId: String!
     ): AudioAnalysis
   }
 

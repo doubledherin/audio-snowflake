@@ -17,7 +17,7 @@ class SpotifyWebAPI extends RESTDataSource {
     request.headers.set('Authorization', this.context.token)
   }
 
-  async getAudioAnalysis(userInputId, userInputTitle, userInputArtist) {
+  async getSnowflakeData(userInputId, userInputTitle, userInputArtist) {
     let id = userInputId ? userInputId : await this.getSpotifyId(userInputTitle, userInputArtist)
     const { title, artist } = await this.getTitleAndArtistBySpotifyId(id)
     try {
