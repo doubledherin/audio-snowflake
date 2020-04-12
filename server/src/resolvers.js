@@ -1,8 +1,8 @@
 
 module.exports = {
   Query: {
-    snowflakeData: async (_, { spotifyId, title, artist }, { dataSources }) => {
-      return await dataSources.spotifyWebAPI.getSnowflakeData(spotifyId, title, artist)
+    snowflakeData: async (_, { input }, { dataSources }) => {
+      return await dataSources.spotifyWebAPI.getSnowflakeData(input)
     }
   },
   Mutation: {

@@ -23,12 +23,14 @@ const typeDefs = gql`
     timeSignature: Int
   }
 
+  input SnowflakeInput {
+    spotifyId: String
+    title: String
+    artist: String
+  }
+
   type Query {
-    snowflakeData(
-      spotifyId: String
-      title: String
-      artist: String
-    ): AudioAnalysis
+    snowflakeData(input: SnowflakeInput): AudioAnalysis
   }
 
   type Mutation {
