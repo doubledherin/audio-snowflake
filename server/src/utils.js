@@ -1,3 +1,4 @@
+// A track has an array of artists to account for duets, etc.
 function trackIncludesArtist(track, artist) {
   const includesArtist = track.artists.filter(a => {
     return a.name === artist
@@ -12,8 +13,8 @@ function filterTracksOnArtist(tracks, artist) {
 }
 
 // Popularity is an int ranging from 100 to 0, with 100 being the most popular
-function sortFilteredTracksByPopularity(filteredTracks) {
-  return filteredTracks.sort((trackA, trackB) => {
+function sortTracksByPopularity(tracks) {
+  return tracks.sort((trackA, trackB) => {
     if (trackA.popularity > trackB.popularity) {
       return -1
     }
@@ -24,8 +25,8 @@ function sortFilteredTracksByPopularity(filteredTracks) {
   })
 }
 
-function transformSections(spotifySections) {
-  return spotifySections.map(section => {
+function transformSections(sections) {
+  return sections.map(section => {
     const { key, mode, time_signature: timeSignature } = section
 
     return {
@@ -36,7 +37,7 @@ function transformSections(spotifySections) {
   })
 }
 
-function transformTrack(spotifyTrack) {
+function transformTrack(track) {
   const {
     duration,
     key,
@@ -45,7 +46,7 @@ function transformTrack(spotifyTrack) {
     mode,
     tempo,
     time_signature: timeSignature
-  } = spotifyTrack
+  } = track
 
   return {
     duration,
@@ -59,7 +60,7 @@ function transformTrack(spotifyTrack) {
 
 module.exports = { 
   filterTracksOnArtist, 
-  sortFilteredTracksByPopularity,
+  sortTracksByPopularity,
   transformSections, 
   transformTrack
 }
