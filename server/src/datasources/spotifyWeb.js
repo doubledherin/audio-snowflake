@@ -17,13 +17,17 @@ class SpotifyWebAPI extends RESTDataSource {
     request.headers.set('Authorization', this.context.token)
   }
 
-  async getSnowflakeData(input) {
-    let id = input.spotifyId ? input.spotifyId : await this.getSpotifyId(input.title, input.artist)
-    const { title, artist } = await this.getTitleAndArtistBySpotifyId(id)
+  async getSnowflakeData({ spotifyId, title: inputTitle, artist: inputArtist }) {
     try {
-      const { track: spotifyTrack, sections: spotifySections } = await this.getAudioAnalysisBySpotifyId(id)
-      const track = transformTrack(spotifyTrack)
-      const sections = transformSections(spotifySections)
+      spotifyId = spotifyId || await this.getSpotifyId(inputTitle, inputArtist)
+    } catch(e) {
+      console.log("ERROR, ", e) // TODO
+    }
+    try {
+      const audioAnalysis = await this.getAudioAnalysisBySpotifyId(spotifyId)
+      const track = transformTrack(audioAnalysis.track)
+      const sections = transformSections(audioAnalysis.sections)
+      const { title, artist } = await this.getTitleAndArtistBySpotifyId(spotifyId)
       return {
         artist,
         title,
@@ -63,7 +67,6 @@ class SpotifyWebAPI extends RESTDataSource {
       }
     }
     console.log("INPUT ERROR")
-
   }
 
   async getTracksByTitle(title) {

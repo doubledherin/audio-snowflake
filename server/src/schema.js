@@ -1,7 +1,7 @@
 const { gql } = require('apollo-server')
 
 const typeDefs = gql`
-  type AudioAnalysis {
+  type SnowflakeData {
     artist: String
     title: String
     track: Track
@@ -30,7 +30,7 @@ const typeDefs = gql`
   }
 
   type Query {
-    snowflakeData(input: SnowflakeInput): AudioAnalysis
+    snowflakeData(input: SnowflakeInput): SnowflakeData
   }
 
   type Mutation {
