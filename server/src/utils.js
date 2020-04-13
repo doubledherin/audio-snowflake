@@ -1,5 +1,8 @@
 // A track has an array of artists to account for duets, etc.
 function trackIncludesArtist(track, artist) {
+  if (!track) {
+    throw new TypeError('track must be defined')
+  }
   const includesArtist = track.artists.filter(a => {
     return a.name === artist
   })
@@ -61,6 +64,7 @@ function transformTrack(track) {
 module.exports = { 
   filterTracksOnArtist, 
   sortTracksByPopularity,
+  trackIncludesArtist,
   transformSections, 
-  transformTrack
+  transformTrack,
 }
