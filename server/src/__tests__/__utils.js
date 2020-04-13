@@ -6,7 +6,7 @@ const {
   transformTrack
  } = require('../utils')
 
-const { tracks, audioAnalysisOfEvilSections: sections } = require('../__fixtures')
+const { tracks, audioAnalysisOfEvilSections: sections } = require('./__fixtures')
 const { mrBrightside, onTop, midnightShow, evil, nextExit } = tracks
 
 describe("The 'trackIncludesArtist' function", () => {
@@ -90,6 +90,13 @@ describe("The 'sortTracksByPopularity' function", () => {
     const tracks = [onTop, midnightShow, mrBrightside]
     const actual = sortTracksByPopularity(tracks)
     const expected = [mrBrightside, onTop, midnightShow]
+    expect(actual).toEqual(expected)
+  })
+
+  test("handles the case when two tracks have the same popularity rating", () => {
+    const tracks = [onTop, onTop, mrBrightside]
+    const actual = sortTracksByPopularity(tracks)
+    const expected = [mrBrightside, onTop, onTop]
     expect(actual).toEqual(expected)
   })
 

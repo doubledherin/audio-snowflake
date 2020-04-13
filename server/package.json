@@ -35,7 +35,9 @@
   },
   "jest": {
     "testPathIgnorePatterns": [
-      "/node_modules/"
-    ]
+      "/node_modules/",
+      "__fixtures"
+    ],
+    "coverageReporters": ["html"]
   }
 }
