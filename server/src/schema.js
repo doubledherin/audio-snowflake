@@ -29,14 +29,29 @@ const typeDefs = gql`
     artist: String
   }
 
-  type TrackNotFoundError {
+  interface Error {
     message: String!
   }
 
-  union SnowflakeDataResult = SnowflakeData | TrackNotFoundError
+  type TrackNotFoundError implements Error {
+    message: String!
+    code: String!
+  }
+
+  type AudioAnalysisNotFoundError implements Error {
+    message: String!
+    code: String!
+  }
+
+  type InvalidInputError implements Error {
+    message: String!
+    code: String!
+  }
+
+  union SnowflakeDataResult = SnowflakeData | TrackNotFoundError | AudioAnalysisNotFoundError | InvalidInputError
 
   type Query {
-    snowflakeData(input: SnowflakeInput): SnowflakeDataResult
+    snowflakeData(input: SnowflakeInput): SnowflakeDataResult!
   }
 
   type Mutation {

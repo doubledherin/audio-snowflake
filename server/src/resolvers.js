@@ -2,16 +2,48 @@
 module.exports = {
   Query: {
     snowflakeData: async (_, { input }, { dataSources }) => {
-      const snowflakeData = await dataSources.spotifyWebAPI.getSnowflakeData(input)
-      if (snowflakeData) {
+      try {
+        const snowflakeData = await dataSources.spotifyWebAPI.getSnowflakeData(input)
         return {
           __typename: "SnowflakeData",
           ...snowflakeData
         }
-      }
-      return {
-        __typename: "TrackNotFoundError",
-        message: `Could not find a Spotify track with the following input: spotifyId ${input.spotifyId}, title ${input.title}, artist ${input.artist}`
+      } catch(e) {
+        if (e.extensions) {
+          const { message } = e
+          const { code } = e.extensions
+          switch (code) {
+            case "TRACK_NOT_FOUND":
+              return {
+                __typename: "TrackNotFoundError",
+                message,
+                code
+              }
+            break
+            case "AUDIO_ANALYSIS_NOT_FOUND":
+              return {
+                __typename: "AudioAnalysisNotFoundError",
+                message,
+                code
+              }
+            break
+            case "INVALID_INPUT":
+              return {
+                __typename: "InvalidInputError",
+                message,
+                code
+              }
+            break
+            default:
+              return {
+                __typename: "Error",
+                message,
+                code
+              }
+          }
+        } else {
+          return e
+        }
       }
     }
   },
