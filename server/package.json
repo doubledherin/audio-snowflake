@@ -7,6 +7,7 @@
   "scripts": {
     "test": "jest",
     "test:watch": "npm run test -- --watch",
+    "test:coverage": "npm run test -- --coverage",
     "start": "nodemon src/index.js",
     "start:ci": "node src/index.js"
   },
@@ -27,6 +28,7 @@
   "devDependencies": {
     "apollo-link": "^1.2.3",
     "apollo-link-http": "^1.5.5",
+    "handlebars": "^4.5.0",
     "jest": "^23.6.0",
     "nock": "^10.0.2",
     "node-fetch": "^2.2.1"

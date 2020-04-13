@@ -1,2 +1,3 @@
+server/coverage/
 server/.env
 node_modules/
