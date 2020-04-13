@@ -1,5 +1,12 @@
-const { trackIncludesArtist, filterTracksOnArtist } = require('../utils');
-const { tracks } = require('../__fixtures')
+const { 
+  trackIncludesArtist, 
+  filterTracksOnArtist,
+  sortTracksByPopularity,
+  transformSections,
+  transformTrack
+ } = require('../utils')
+
+const { tracks, audioAnalysisOfEvilSections: sections } = require('../__fixtures')
 const { mrBrightside, onTop, midnightShow, evil, nextExit } = tracks
 
 describe("The 'trackIncludesArtist' function", () => {
@@ -35,6 +42,7 @@ describe("The 'trackIncludesArtist' function", () => {
     }).toThrow(TypeError)
   })
 })
+
 
 describe("The 'filterTracksOnArtist' function", () => {
   test("returns a filtered list of tracks that match the artist", () => {
@@ -77,4 +85,84 @@ describe("The 'filterTracksOnArtist' function", () => {
 })
 
 
+describe("The 'sortTracksByPopularity' function", () => {
+  test("returns the tracks sorted by popularity", () => {
+    const tracks = [onTop, midnightShow, mrBrightside]
+    const actual = sortTracksByPopularity(tracks)
+    const expected = [mrBrightside, onTop, midnightShow]
+    expect(actual).toEqual(expected)
+  })
 
+  test("returns an empty list when the original list is empty", () => {
+    const tracks = []
+    const actual = sortTracksByPopularity(tracks)
+    const expected = []
+    expect(actual).toEqual(expected)
+  })
+})
+
+
+describe("The 'transformSections' function", () => {
+  test("works as expected", () => {
+    const actual = transformSections(sections)
+    const expected = [
+      {
+        key: sections[0].key,
+        mode: sections[0].mode,
+        timeSignature: sections[0].time_signature
+      },
+      {
+        key: sections[1].key,
+        mode: sections[1].mode,
+        timeSignature: sections[1].time_signature
+      },
+      {
+        key: sections[2].key,
+        mode: sections[2].mode,
+        timeSignature: sections[2].time_signature
+      },
+      {
+        key: sections[3].key,
+        mode: sections[3].mode,
+        timeSignature: sections[3].time_signature
+      },
+      {
+        key: sections[4].key,
+        mode: sections[4].mode,
+        timeSignature: sections[4].time_signature
+      },
+      {
+        key: sections[5].key,
+        mode: sections[5].mode,
+        timeSignature: sections[5].time_signature
+      },
+      {
+        key: sections[6].key,
+        mode: sections[6].mode,
+        timeSignature: sections[6].time_signature
+      },
+      {
+        key: sections[7].key,
+        mode: sections[7].mode,
+        timeSignature: sections[7].time_signature
+      }
+    ]
+    expect(actual).toEqual(expected)
+  })
+})
+
+
+describe("The 'transformTrack' function", () => {
+  test("works as expected", () => {
+    const actual = transformTrack(mrBrightside)
+    const expected = {
+      duration: mrBrightside.duration,
+      key: mrBrightside.key,
+      loudness: mrBrightside.loudness,
+      mode: mrBrightside.mode,
+      tempo: mrBrightside.tempo,
+      timeSignature: mrBrightside.time_signature
+    }
+    expect(actual).toEqual(expected)
+  })
+})
