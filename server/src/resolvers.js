@@ -35,11 +35,7 @@ module.exports = {
               }
             break
             default:
-              return {
-                __typename: "Error",
-                message,
-                code
-              }
+              return e
           }
         } else {
           return e

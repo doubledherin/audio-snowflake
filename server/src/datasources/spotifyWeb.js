@@ -1,21 +1,13 @@
 const { RESTDataSource } = require('apollo-datasource-rest')
 const { ApolloError } = require('apollo-server')
 
+const { errors: { trackNotFound, audioAnalysisNotFound, invalidInput } } = require('../constants/errors')
 const {
   filterTracksOnArtist,
   sortTracksByPopularity,
   transformSections,
   transformTrack
 } = require('../utils')
-
-const trackNotFoundMessage = `Unable to find track based on input: `
-const trackNotFoundCode = 'TRACK_NOT_FOUND'
-
-const audioAnalysisNotFoundMessage = `Unable to find audio analysis based on spotifyId: `
-const audioAnalysisNotFoundCode = 'AUDIO_ANALYSIS_NOT_FOUND'
-
-const invalidInputMessage = `User input must be provided`
-const invalidInputCode = 'INVALID_INPUT'
 
 class SpotifyWebAPI extends RESTDataSource {
   constructor() {
@@ -43,41 +35,23 @@ class SpotifyWebAPI extends RESTDataSource {
 
   async getSpotifyId(title, artist) {
     if (!title && !artist) {
-      throw new ApolloError(invalidInputMessage, invalidInputCode)
+      throw new ApolloError(`${invalidInput.message}, title and/or artist must be provided if no spotifyId is provided`, invalidInput.code)
     } else {
-      if (title && artist) {
-        let response = await this.getTracksByTitle(title)
-        if (response && response.tracks && (response.tracks.items !== [])) {
-          const filtered = filterTracksOnArtist(response.tracks.items, artist)
-          const sorted = sortTracksByPopularity(filtered)
-          const selectedTrack = sorted[0]
-          return selectedTrack.id  
-        }  
+      const response = title ? await this.getTracksByTitle(title) : await this.getTracksByArtist(artist)
+      if (!response || !response.items || response.items.length === 0) {
+        throw new ApolloError(`${trackNotFound} title: ${title}, artist: ${artist}`)
       }
-      if (title) {
-        let response = await this.getTracksByTitle(title)
-        if (response && response.tracks && (response.tracks.items !== [])) {
-          const sorted = sortTracksByPopularity(response.tracks.items)
-          const selectedTrack = sorted[0]
-          return selectedTrack.id  
-        }
-      }
-      if (artist) {
-        let response = await this.getTracksByArtist(artist)
-        if (response && response.tracks && (response.tracks.items !== [])) {
-          const filtered = filterTracksOnArtist(response.tracks.items, artist) // THIS IS NECESSARY BECAUSE SPOTIFY DOESN"T RETURN EXACT HITS< JUST STAETS WTIH
-          const sorted = sortTracksByPopularity(filtered)
-          const selectedTrack = sorted[0]
-          return selectedTrack.id  
-        }  
-      }
+      const filtered = filterTracksOnArtist(response.items, artist)
+      const sorted = sortTracksByPopularity(filtered)
+      const selectedTrack = sorted[0]
+      return selectedTrack.id  
     }
   }
 
   async getTracksByTitle(title) {
     const { tracks } = await this.get(`search?q=${encodeURIComponent(title)}&type=track`)
     if (!tracks || !tracks.items || tracks.items.length === 0 ) {
-      throw new ApolloError(`${trackNotFoundMessage} title: ${title}`, trackNotFoundCode)
+      throw new ApolloError(`${trackNotFound.message} title: ${title}`, trackNotFound.code)
     } else {
       return tracks
     }
@@ -86,7 +60,7 @@ class SpotifyWebAPI extends RESTDataSource {
   async getTracksByArtist(artist) {
     const response = await this.get(`search?q=artist:${encodeURIComponent(artist)}&type=track&limit=50 `)
     if (!response) {
-      throw new ApolloError(`${trackNotFoundMessage} artist: ${artist}`, trackNotFoundCode)
+      throw new ApolloError(`${trackNotFound.message} artist: ${artist}`, trackNotFound.code)
     } else {
       return response
     }
@@ -95,7 +69,7 @@ class SpotifyWebAPI extends RESTDataSource {
   async getTitleAndArtistBySpotifyId(spotifyId) {
     const response = await this.get(`tracks/${spotifyId}`)
     if (!response) {
-      throw new ApolloError(`${trackNotFoundMessage} spotifyId: ${spotifyId}`, trackNotFoundCode)
+      throw new ApolloError(`${trackNotFound.message} spotifyId: ${spotifyId}`, trackNotFound.code)
     } else {
       const { name: title, artists } = response
       const artist = artists.map(_ => _.name).join(' & ')
@@ -106,10 +80,9 @@ class SpotifyWebAPI extends RESTDataSource {
   async getAudioAnalysisBySpotifyId(spotifyId) {
     const response = await this.get(`audio-analysis/${spotifyId}`)
     if (!response) {
-      return new ApolloError(`${audioAnalysisNotFoundMessage} spotifyId: ${spotifyId}`, audioAnalysisNotFoundCode)
+      return new ApolloError(`${audioAnalysisNotFound.message} spotifyId: ${spotifyId}`, audioAnalysisNotFound.code)
     }
-    const { track: spotifyTrack, sections: spotifySections } = response
-    return await this.transformAudioAnalysis(spotifyId, spotifyTrack, spotifySections)  
+    return response
   }
 
   async transformAudioAnalysis(spotifyId, spotifyTrack, spotifySections) {
