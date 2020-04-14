@@ -1,5 +1,10 @@
 const { ApolloError } = require('apollo-server')
 
+// TODO: TEST THIS
+function selectTrack(tracks, artist) {
+  return sortTracksByPopularity(filterTracksOnArtist(tracks, artist))[0]
+}
+
 // A track has an array of artists to account for duets, etc.
 function trackIncludesArtist(track, artist) {
   const includesArtist = track.artists.filter(a => {
@@ -64,7 +69,8 @@ function transformTrack(track) {
   }
 }
 
-module.exports = { 
+module.exports = {
+  selectTrack,
   filterTracksOnArtist, 
   sortTracksByPopularity,
   trackIncludesArtist,

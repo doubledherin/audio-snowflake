@@ -1,10 +1,15 @@
 const { RESTDataSource } = require('apollo-datasource-rest')
 const { ApolloError } = require('apollo-server')
 
-const { errors: { trackNotFound, audioAnalysisNotFound, invalidInput } } = require('../constants/errors')
+const { 
+  errors: { 
+    trackNotFound, 
+    audioAnalysisNotFound, 
+    invalidInput 
+  } 
+} = require('../constants/errors')
 const {
-  filterTracksOnArtist,
-  sortTracksByPopularity,
+  selectTrack,
   transformSections,
   transformTrack
 } = require('../utils')
@@ -19,37 +24,43 @@ class SpotifyWebAPI extends RESTDataSource {
     request.headers.set('Authorization', this.context.token)
   }
 
-  async getSnowflakeData({ spotifyId, title: inputTitle, artist: inputArtist }) {
-    spotifyId = spotifyId || await this.getSpotifyId(inputTitle, inputArtist)
-    const audioAnalysis = await this.getAudioAnalysisBySpotifyId(spotifyId)
-    const { title, artist } = await this.getTitleAndArtistBySpotifyId(spotifyId)
-    const track = transformTrack(audioAnalysis.track)
-    const sections = transformSections(audioAnalysis.sections)
+  async getSnowflakeData({ spotifyId, title, artist }) {
+    spotifyId = spotifyId || await this.getSpotifyId(title, artist)
+    const track = await this.getTrackBySpotifyId(spotifyId)
+    const audioAnalysis = await this.getAudioAnalysis(track.id)
+    return this.snowflakeDataReducer(track, audioAnalysis)
+  }
+
+  snowflakeDataReducer(track, audioAnalysis) {
     return {
-      artist,
-      title,
-      track,
-      sections,
+      artist: track.artists.map(_ => _.name).join(' & '),
+      title: track.name,
+      track: transformTrack(audioAnalysis.track),
+      sections: transformSections(audioAnalysis.sections)
     }
   }
 
   async getSpotifyId(title, artist) {
-    if (!title && !artist) {
-      throw new ApolloError(`${invalidInput.message}, title and/or artist must be provided if no spotifyId is provided`, invalidInput.code)
-    } else {
-      const response = await (title ? filterTracksOnArtist(this.getTracksByTitle(title), artist) : this.getTracksByArtist(artist))
-      if (!response || !response.items || response.items.length === 0) {
-        throw new ApolloError(`${trackNotFound} title: ${title}, artist: ${artist}`)
-      }
-      const tracks = response.items
-      const track = this.selectTrack(tracks, artist)
-      return track.id  
-    }
+    const tracks = await this.getTracks(title, artist)
+    const track = selectTrack(tracks.items, artist)
+    return track.id  
   }
 
-  selectTrack(tracks, artist) {
-    const track = sortTracksByPopularity(filterTracksOnArtist(tracks, artist))[0]
-    return track
+  //TODO: Write generic function to handle all empty responses from Spotify
+  async getTracks(title, artist) {
+    let tracks
+    if (title) {
+      tracks = await this.getTracksByTitle(title)
+    } else if (artist) {
+      tracks = await this.getTracksByArtist(artist)
+    } else {
+      throw new ApolloError(`${invalidInput.message}, title and/or artist must be provided if no spotifyId is provided`, invalidInput.code)
+    }
+    if (!tracks || !tracks.items || tracks.items.length === 0) {
+      throw new ApolloError(`${trackNotFound} title: ${title}, artist: ${artist}`)
+    } else {
+      return tracks
+    }
   }
 
   async getTracksByTitle(title) {
@@ -70,6 +81,16 @@ class SpotifyWebAPI extends RESTDataSource {
     }
   }
 
+  async getTrackBySpotifyId(spotifyId) {
+    const response = await this.get(`tracks/${spotifyId}`)
+    if (!response) { /// check what actual resonse would be TODO
+      throw new ApolloError(`${trackNotFound.message} spotifyId: ${spotifyId}`, trackNotFound.code)
+    } else {
+      return response
+    }
+  }
+
+
   async getTitleAndArtistBySpotifyId(spotifyId) {
     const response = await this.get(`tracks/${spotifyId}`)
     if (!response) {
@@ -81,26 +102,12 @@ class SpotifyWebAPI extends RESTDataSource {
     }
   }
 
-  async getAudioAnalysisBySpotifyId(spotifyId) {
+  async getAudioAnalysis(spotifyId) {
     const response = await this.get(`audio-analysis/${spotifyId}`)
     if (!response) {
       return new ApolloError(`${audioAnalysisNotFound.message} spotifyId: ${spotifyId}`, audioAnalysisNotFound.code)
     }
     return response
-  }
-
-  async transformAudioAnalysis(spotifyId, spotifyTrack, spotifySections) {
-    const response = await this.getTitleAndArtistBySpotifyId(spotifyId)
-    const  { title, artist } = response
-    const track = transformTrack(spotifyTrack)
-    const sections = transformSections(spotifySections)
-
-    return {
-      artist,
-      title,
-      track,
-      sections,
-    }
   }
 }
 
