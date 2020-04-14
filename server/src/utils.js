@@ -1,12 +1,7 @@
 const { ApolloError } = require('apollo-server')
 
-const { errors: { trackNotFound, invalidInput } } = require('./constants/errors')
-
 // A track has an array of artists to account for duets, etc.
 function trackIncludesArtist(track, artist) {
-  if (!track) {
-    throw new ApolloError(`${invalidInput}, missing name of track`)
-  }
   const includesArtist = track.artists.filter(a => {
     return a.name === artist
   })
@@ -14,12 +9,12 @@ function trackIncludesArtist(track, artist) {
 }
 
 function filterTracksOnArtist(tracks, artist) {
+  if (!artist) {
+    return tracks
+  }
   const filtered = tracks.filter(track => {
     return trackIncludesArtist(track, artist)
   })
-  if (filtered.length === 0) {
-    throw new ApolloError(`${trackNotFound.message} artist: ${artist}`, trackNotFound.code)
-  }
   return filtered
 }
 

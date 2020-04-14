@@ -1,3 +1,5 @@
+const { ApolloError } = require('apollo-server')
+
 const { 
   trackIncludesArtist, 
   filterTracksOnArtist,
@@ -5,7 +7,6 @@ const {
   transformSections,
   transformTrack
  } = require('../utils')
-
 const { tracks, audioAnalysisOfEvilSections: sections } = require('./__fixtures')
 const { mrBrightside, onTop, midnightShow, evil, nextExit } = tracks
 
@@ -29,18 +30,6 @@ describe("The 'trackIncludesArtist' function", () => {
   test("returns 'false' when 'artist' is null", () => {
     expect(trackIncludesArtist(track, null)).toBe(false)
   })
-
-  test("throws a TypeError when 'track' is undefined", () => {
-    expect(() => {
-      trackIncludesArtist(undefined, artistTrue)
-    }).toThrow(TypeError)
-  })
-
-  test("throws a TypeError when 'track' is null", () => {
-    expect(() => {
-      trackIncludesArtist(null, artistTrue)
-    }).toThrow(TypeError)
-  })
 })
 
 
@@ -61,26 +50,12 @@ describe("The 'filterTracksOnArtist' function", () => {
     expect(actual).toEqual(expected)  
   })
 
-  test("returns an empty list when 'tracks' is an empty list", () => {
-    const tracks = []
-    const artist = 'Pixies'
-    const actual = filterTracksOnArtist(tracks, artist)
-    const expected = []
-    expect(actual).toEqual(expected)  
-  })
-
-  test("returns a empty list when 'artist' is undefined", () => {
+  test("returns the tracks unfiltered when 'artist' is undefined", () => {
     const tracks = [mrBrightside, onTop, midnightShow, evil, nextExit]
     const artist = undefined
     const actual = filterTracksOnArtist(tracks, artist)
-    const expected = []
+    const expected = tracks
     expect(actual).toEqual(expected)  
-  })
-
-  test("throws a TypeError when 'tracks' is undefined", () => {
-    expect(() => {
-      trackIncludesArtist(undefined, 'Pixies')
-    }).toThrow(TypeError)
   })
 })
 

@@ -37,7 +37,7 @@ class SpotifyWebAPI extends RESTDataSource {
     if (!title && !artist) {
       throw new ApolloError(`${invalidInput.message}, title and/or artist must be provided if no spotifyId is provided`, invalidInput.code)
     } else {
-      const response = await (title ? this.getTracksByTitle(title) : this.getTracksByArtist(artist))
+      const response = await (title ? filterTracksOnArtist(this.getTracksByTitle(title), artist) : this.getTracksByArtist(artist))
       if (!response || !response.items || response.items.length === 0) {
         throw new ApolloError(`${trackNotFound} title: ${title}, artist: ${artist}`)
       }
