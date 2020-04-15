@@ -87,7 +87,6 @@ class SpotifyWebAPI extends RESTDataSource {
     }
   }
 
-
   async getAudioAnalysis(spotifyId) {
     const response = await this.get(`audio-analysis/${spotifyId}`)
     if (!response) {

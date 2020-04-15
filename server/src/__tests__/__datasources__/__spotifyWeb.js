@@ -1,7 +1,8 @@
 const { ApolloError } = require('apollo-server')
 
 const SpotifyWebAPI = require('../../datasources/spotifyWeb')
-const { tracks, audioAnalysisOfEvil } = require('../__fixtures')
+const { tracks, audioAnalysisOfEvil, snowflakeDataOfEvil } = require('../__fixtures')
+const { evil } = tracks
 const { 
   errors: { 
     trackNotFound, 
@@ -17,10 +18,12 @@ const mocks = {
 const ds = new SpotifyWebAPI()
 ds.get = mocks.get
 
-
+//TODO: Finish these test cases and add more
 /**
  * Test cases:
  * 
+ * DONE
+ * snowflakeReducer
  * 
  * getSpotifyId(title, artist)
  *   DONE neither title nor artist are defined:
@@ -43,9 +46,14 @@ ds.get = mocks.get
  * 
  */
 
+describe('[SpotifyWebAPI.snowflakeDataReducer]', () => {
+  it('properly transforms a track and its audio analysis into snowflake data', () => {
+    expect(ds.snowflakeDataReducer(evil, audioAnalysisOfEvil)).toEqual(snowflakeDataOfEvil)
+  })
+})
 
- describe('[SpotifyWebAPI.getSpotifyId]', () => {
-   test('throws an InvalidInput error if neither title nor artist are defined', async () => {
-     await expect(ds.getSpotifyId()).rejects.toThrow(new ApolloError(`${invalidInput.message}`, invalidInput.code))
+describe('[SpotifyWebAPI.getSpotifyId]', () => {
+  test('throws an InvalidInput error if neither title nor artist are defined', async () => {
+    await expect(ds.getSpotifyId()).rejects.toThrow(new ApolloError(`${invalidInput.message}`, invalidInput.code))
   })
 })

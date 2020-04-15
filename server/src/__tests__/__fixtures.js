@@ -1013,4 +1013,59 @@ const audioAnalysisOfEvil = {
   ]
 }
 
-module.exports = { tracks, audioAnalysisOfEvil }
+const snowflakeDataOfEvil = {
+  "artist": "Interpol",
+  "title": "Evil",
+  "track": {
+    "duration": 215.82667,
+    "key": 5,
+    "loudness": -4.09,
+    "mode": 1,
+    "tempo": 129.078,
+    "timeSignature": 4
+  },
+  "sections": [
+    {
+      "key": 2,
+      "mode": 0,
+      "timeSignature": 4
+    },
+    {
+      "key": 5,
+      "mode": 1,
+      "timeSignature": 4
+    },
+    {
+      "key": 2,
+      "mode": 1,
+      "timeSignature": 4
+    },
+    {
+      "key": 2,
+      "mode": 0,
+      "timeSignature": 4
+    },
+    {
+      "key": 2,
+      "mode": 0,
+      "timeSignature": 4
+    },
+    {
+      "key": 5,
+      "mode": 1,
+      "timeSignature": 4
+    },
+    {
+      "key": 9,
+      "mode": 0,
+      "timeSignature": 4
+    },
+    {
+      "key": 2,
+      "mode": 0,
+      "timeSignature": 4
+    }
+  ]
+}
+
+module.exports = { tracks, audioAnalysisOfEvil, snowflakeDataOfEvil }
