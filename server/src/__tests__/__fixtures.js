@@ -1013,6 +1013,4 @@ const audioAnalysisOfEvil = {
   ]
 }
 
-const audioAnalysisOfEvilSections = audioAnalysisOfEvil.sections
-
-module.exports = { tracks, audioAnalysisOfEvilSections }
+module.exports = { tracks, audioAnalysisOfEvil }

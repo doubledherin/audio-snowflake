@@ -8,7 +8,7 @@ const {
   transformSections,
   transformTrack
  } = require('../utils')
-const { tracks, audioAnalysisOfEvilSections: sections } = require('./__fixtures')
+const { tracks, audioAnalysisOfEvil } = require('./__fixtures')
 const { mrBrightside, onTop, midnightShow, evil, nextExit } = tracks
 
 describe("The 'trackIncludesArtist' function", () => {
@@ -90,6 +90,7 @@ describe("The 'sortTracksByPopularity' function", () => {
 
 describe("The 'transformSections' function", () => {
   test("works as expected", () => {
+    const { sections } = audioAnalysisOfEvil
     const actual = transformSections(sections)
     const expected = [
       {
