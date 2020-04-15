@@ -42,14 +42,17 @@ class SpotifyWebAPI extends RESTDataSource {
 
   async getSpotifyId(title, artist) {
     const tracks = await this.getTracks(title, artist)
-    const track = selectTrack(tracks.items, artist)
+    const track = selectTrack(tracks.items, title, artist)
     return track.id  
   }
 
   //TODO: Write generic function to handle all empty responses from Spotify
   async getTracks(title, artist) {
     if (!title && !artist) {
-      throw new ApolloError(`${invalidInput.message}, title and/or artist must be provided if no spotifyId is provided`, invalidInput.code)
+      throw new ApolloError(
+        `${invalidInput.message}`,
+        invalidInput.code
+      )
     } else {
       let tracks
       if (title) {
@@ -60,7 +63,7 @@ class SpotifyWebAPI extends RESTDataSource {
         tracks = response.tracks
       } 
       if (!tracks || !tracks.items || tracks.items.length === 0) {
-        throw new ApolloError(`${trackNotFound.message} title: ${title}, artist: ${artist}`, trackNotFound.code)
+        throw new ApolloError(`${trackNotFound.message} matching title: ${title} and artist: ${artist}`, trackNotFound.code)
       } else {
         return tracks
       }  
@@ -78,7 +81,7 @@ class SpotifyWebAPI extends RESTDataSource {
   async getTrackBySpotifyId(spotifyId) {
     const response = await this.get(`tracks/${spotifyId}`)
     if (!response) { /// check what actual resonse would be TODO
-      throw new ApolloError(`${trackNotFound.message} spotifyId: ${spotifyId}`, trackNotFound.code)
+      throw new ApolloError(`${trackNotFound.message} matching spotifyId: ${spotifyId}`, trackNotFound.code)
     } else {
       return response
     }
@@ -88,7 +91,7 @@ class SpotifyWebAPI extends RESTDataSource {
   async getAudioAnalysis(spotifyId) {
     const response = await this.get(`audio-analysis/${spotifyId}`)
     if (!response) {
-      return new ApolloError(`${audioAnalysisNotFound.message} spotifyId: ${spotifyId}`, audioAnalysisNotFound.code)
+      return new ApolloError(`${audioAnalysisNotFound.message} based on spotifyId: ${spotifyId}`, audioAnalysisNotFound.code)
     }
     return response
   }

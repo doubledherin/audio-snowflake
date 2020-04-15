@@ -1,4 +1,5 @@
 const { ApolloError } = require('apollo-server')
+const { errors: { trackNotFound } } = require('../constants/errors')
 
 const { 
   trackIncludesArtist, 
@@ -35,25 +36,28 @@ describe("The 'trackIncludesArtist' function", () => {
 
 describe("The 'filterTracksOnArtist' function", () => {
   test("returns a filtered list of tracks that match the artist", () => {
+    const title = 'foo'
     const tracks = [mrBrightside, onTop, midnightShow, evil, nextExit]
     const artist = 'Interpol'
-    const actual = filterTracksOnArtist(tracks, artist)
+    const actual = filterTracksOnArtist(tracks, title, artist)
     const expected = [ evil, nextExit ]
     expect(actual).toEqual(expected)  
   })
 
-  test("returns an empty list when no matching artists are found", () => {
+  test("throws a TrackNotFound error when no matching artists are found", () => {
+    const title = 'foo'
     const tracks = [mrBrightside, onTop, midnightShow, evil, nextExit]
     const artist = 'Pixies'
-    const actual = filterTracksOnArtist(tracks, artist)
-    const expected = []
-    expect(actual).toEqual(expected)  
+    expect(() => {
+      filterTracksOnArtist(tracks, title, artist)
+    }).toThrow(new ApolloError(`${trackNotFound.message} matching title: ${title} and artist: ${artist}`, trackNotFound.code))  
   })
 
   test("returns the tracks unfiltered when 'artist' is undefined", () => {
+    const title = 'foo'
     const tracks = [mrBrightside, onTop, midnightShow, evil, nextExit]
     const artist = undefined
-    const actual = filterTracksOnArtist(tracks, artist)
+    const actual = filterTracksOnArtist(tracks, title, artist)
     const expected = tracks
     expect(actual).toEqual(expected)  
   })
