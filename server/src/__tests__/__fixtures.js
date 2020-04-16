@@ -1014,16 +1014,15 @@ const audioAnalysisOfEvil = {
 }
 
 const snowflakeDataOfEvil = {
-  "artist": "Interpol",
-  "title": "Evil",
-  "track": {
-    "duration": 215.82667,
-    "key": 5,
-    "loudness": -4.09,
-    "mode": 1,
-    "tempo": 129.078,
-    "timeSignature": 4
-  },
+  "artist": tracks.evil.artists.map(_ => _.name).join(' & '),
+  "duration": audioAnalysisOfEvil.track.duration,
+  "key": audioAnalysisOfEvil.track.key,
+  "loudness": audioAnalysisOfEvil.track.loudness,
+  "mode": audioAnalysisOfEvil.track.mode,
+  "spotifyId": tracks.evil.id,
+  "tempo": audioAnalysisOfEvil.track.tempo,
+  "timeSignature": audioAnalysisOfEvil.track.time_signature,
+  "title": tracks.evil.name,
   "sections": [
     {
       "key": 2,

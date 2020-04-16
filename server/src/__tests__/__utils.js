@@ -5,8 +5,7 @@ const {
   trackIncludesArtist, 
   filterTracksOnArtist,
   sortTracksByPopularity,
-  transformSections,
-  transformTrack
+  transformSections
  } = require('../utils')
 const { tracks, audioAnalysisOfEvil } = require('./__fixtures')
 const { mrBrightside, onTop, midnightShow, evil, nextExit } = tracks
@@ -134,22 +133,6 @@ describe("The 'transformSections' function", () => {
         timeSignature: sections[7].time_signature
       }
     ]
-    expect(actual).toEqual(expected)
-  })
-})
-
-
-describe("The 'transformTrack' function", () => {
-  test("works as expected", () => {
-    const actual = transformTrack(mrBrightside)
-    const expected = {
-      duration: mrBrightside.duration,
-      key: mrBrightside.key,
-      loudness: mrBrightside.loudness,
-      mode: mrBrightside.mode,
-      tempo: mrBrightside.tempo,
-      timeSignature: mrBrightside.time_signature
-    }
     expect(actual).toEqual(expected)
   })
 })

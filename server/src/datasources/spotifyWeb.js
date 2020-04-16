@@ -10,8 +10,7 @@ const {
 } = require('../constants/errors')
 const {
   selectTrack,
-  transformSections,
-  transformTrack
+  transformSections
 } = require('../utils')
 
 class SpotifyWebAPI extends RESTDataSource {
@@ -34,8 +33,14 @@ class SpotifyWebAPI extends RESTDataSource {
   snowflakeDataReducer(track, audioAnalysis) {
     return {
       artist: track.artists.map(_ => _.name).join(' & '),
+      duration: audioAnalysis.track.duration,
+      key: audioAnalysis.track.key,
+      loudness: audioAnalysis.track.loudness,
+      mode: audioAnalysis.track.mode,
+      spotifyId: track.id,
+      tempo: audioAnalysis.track.tempo,
+      timeSignature: audioAnalysis.track.time_signature,
       title: track.name,
-      track: transformTrack(audioAnalysis.track),
       sections: transformSections(audioAnalysis.sections)
     }
   }

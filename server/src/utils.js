@@ -52,32 +52,10 @@ function transformSections(sections) {
   })
 }
 
-function transformTrack(track) {
-  const {
-    duration,
-    key,
-    loudness,
-    name,
-    mode,
-    tempo,
-    time_signature: timeSignature
-  } = track
-
-  return {
-    duration,
-    key,
-    loudness,
-    mode,
-    tempo,
-    timeSignature
-  }
-}
-
 module.exports = {
   selectTrack,
   filterTracksOnArtist, 
   sortTracksByPopularity,
   trackIncludesArtist,
-  transformSections, 
-  transformTrack,
+  transformSections
 }
