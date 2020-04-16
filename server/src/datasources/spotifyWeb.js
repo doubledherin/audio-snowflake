@@ -6,13 +6,10 @@ const {
     trackNotFound, 
     audioAnalysisNotFound,
     audioFeaturesNotFound, 
-    invalidInput 
+    invalidInput
   } 
 } = require('../constants/errors')
-const {
-  selectTrack,
-  transformSections
-} = require('../utils')
+const { selectTrack, snowflakeDataReducer } = require('../utils')
 
 class SpotifyWebAPI extends RESTDataSource {
   constructor() {
@@ -29,24 +26,7 @@ class SpotifyWebAPI extends RESTDataSource {
     const track = await this.getTrackBySpotifyId(spotifyId)
     const audioAnalysis = await this.getAudioAnalysis(track.id)
     const audioFeatures = await this.getAudioFeatures(track.id)
-    return this.snowflakeDataReducer(track, audioAnalysis, audioFeatures)
-  }
-
-  snowflakeDataReducer(track, audioAnalysis, audioFeatures) {
-    return {
-      artist: track.artists.map(_ => _.name).join(' & '),
-      duration: audioAnalysis.track.duration,
-      energy: audioFeatures.energy,
-      key: audioAnalysis.track.key,
-      loudness: audioAnalysis.track.loudness,
-      mode: audioAnalysis.track.mode,
-      spotifyId: track.id,
-      tempo: audioAnalysis.track.tempo,
-      timeSignature: audioAnalysis.track.time_signature,
-      title: track.name,
-      sections: transformSections(audioAnalysis.sections),
-      valence: audioFeatures.valence
-    }
+    return snowflakeDataReducer(track, audioAnalysis, audioFeatures)
   }
 
   async getSpotifyId(title, artist) {

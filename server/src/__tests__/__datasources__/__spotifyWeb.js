@@ -46,11 +46,6 @@ ds.get = mocks.get
  * 
  */
 
-describe('[SpotifyWebAPI.snowflakeDataReducer]', () => {
-  it('properly transforms a track and its audio analysis into snowflake data', () => {
-    expect(ds.snowflakeDataReducer(evil, audioAnalysisOfEvil, audioFeaturesOfEvil)).toEqual(snowflakeDataOfEvil)
-  })
-})
 
 describe('[SpotifyWebAPI.getSpotifyId]', () => {
   test('throws an InvalidInput error if neither title nor artist are defined', async () => {

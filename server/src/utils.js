@@ -40,9 +40,11 @@ function sortTracksByPopularity(tracks) {
   })
 }
 
-function transformSections(sections) {
-  return sections.map(section => {
-    const { key, mode, time_signature: timeSignature } = section
+// Extracts the key, mode, and time signature
+// Dedupes and takes the 5 with the longest combined duration
+function sectionsReducer(sections) {
+  const reduced = sections.map(section => {
+    const { duration, key, mode, time_signature: timeSignature } = section
 
     return {
       key,
@@ -50,12 +52,37 @@ function transformSections(sections) {
       timeSignature
     }
   })
+  const collapsed = sectionsCollapser(sections)
+  return reduced
+}
+
+function sectionsCollapser(sections) {
+  const collapsed = sections
+  return collapsed
+}
+
+function snowflakeDataReducer(track, audioAnalysis, audioFeatures) {
+  return {
+    artist: track.artists.map(_ => _.name).join(' & '),
+    duration: audioAnalysis.track.duration,
+    energy: audioFeatures.energy,
+    key: audioAnalysis.track.key,
+    loudness: audioAnalysis.track.loudness,
+    mode: audioAnalysis.track.mode,
+    spotifyId: track.id,
+    tempo: audioAnalysis.track.tempo,
+    timeSignature: audioAnalysis.track.time_signature,
+    title: track.name,
+    sections: sectionsReducer(audioAnalysis.sections),
+    valence: audioFeatures.valence
+  }
 }
 
 module.exports = {
+  sectionsReducer,
   selectTrack,
-  filterTracksOnArtist, 
+  filterTracksOnArtist,
+  snowflakeDataReducer,
   sortTracksByPopularity,
   trackIncludesArtist,
-  transformSections
 }

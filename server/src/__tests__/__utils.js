@@ -4,10 +4,11 @@ const { errors: { trackNotFound } } = require('../constants/errors')
 const { 
   trackIncludesArtist, 
   filterTracksOnArtist,
+  snowflakeDataReducer,
   sortTracksByPopularity,
-  transformSections
+  sectionsReducer
  } = require('../utils')
-const { tracks, audioAnalysisOfEvil } = require('./__fixtures')
+const { tracks, audioAnalysisOfEvil, audioFeaturesOfEvil, snowflakeDataOfEvil } = require('./__fixtures')
 const { mrBrightside, onTop, midnightShow, evil, nextExit } = tracks
 
 describe("The 'trackIncludesArtist' function", () => {
@@ -86,11 +87,17 @@ describe("The 'sortTracksByPopularity' function", () => {
   })
 })
 
+describe('[SpotifyWebAPI.snowflakeDataReducer]', () => {
+  it('properly transforms a track and its audio analysis into snowflake data', () => {
+    expect(snowflakeDataReducer(evil, audioAnalysisOfEvil, audioFeaturesOfEvil)).toEqual(snowflakeDataOfEvil)
+  })
+})
 
-describe("The 'transformSections' function", () => {
+
+describe("The 'sectionsReducer' function", () => {
   test("works as expected", () => {
     const { sections } = audioAnalysisOfEvil
-    const actual = transformSections(sections)
+    const actual = sectionsReducer(sections)
     const expected = [
       {
         key: sections[0].key,
