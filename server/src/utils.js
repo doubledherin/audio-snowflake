@@ -1,6 +1,8 @@
 const { ApolloError } = require('apollo-server')
 const { errors: { trackNotFound } } = require('./constants/errors')
 
+const MAX_NUMBER_OF_SECTIONS = 5
+
 // TODO: TEST THIS
 function selectTrack(tracks, title, artist) {
   return sortTracksByPopularity(filterTracksOnArtist(tracks, title, artist))[0]
@@ -40,25 +42,50 @@ function sortTracksByPopularity(tracks) {
   })
 }
 
-// Extracts the key, mode, and time signature
-// Dedupes and takes the 5 with the longest combined duration
 function sectionsReducer(sections) {
-  const reduced = sections.map(section => {
-    const { duration, key, mode, time_signature: timeSignature } = section
-
+  
+  const composed = sections.map(section => {
     return {
-      key,
-      mode,
-      timeSignature
+      duration: section.duration,
+      key: section.key,
+      mode: section.mode,
+      timeSignature: section.time_signature
     }
   })
-  const collapsed = sectionsCollapser(sections)
-  return reduced
+  const collapsed = sectionsCollapser(composed)
+  const sorted = sortSections(collapsed)
+  return sorted.slice(0, MAX_NUMBER_OF_SECTIONS)
 }
 
+// Reduces sections that have the same key, mode, and time signature to one section
+// with a duration that equals the sum of the collapsed sections' durations.
 function sectionsCollapser(sections) {
-  const collapsed = sections
+  const collapsed = [...sections.reduce((result, section) => {
+    const key = `${section.key}-${section.mode}-${section.timeSignature}`
+    const value = result.get(key) || Object.assign({}, section, { duration: 0 })
+    value.duration += section.duration
+    return result.set(key, value)
+  }, new Map).values()]
   return collapsed
+}
+
+// Sorts sections by duration, in descending order
+// then removes the 'duration' key, which is no longer needed.
+function sortSections(sections) {
+  const sorted = sections.sort((sectionA, sectionB) => {
+    if (sectionA.duration > sectionB.duration) {
+      return -1
+    }
+    if (sectionA.duration < sectionB.duration) {
+      return 1
+    }
+    return 0
+  })
+  const withoutDuration = sorted.map(section => {
+    delete section.duration
+    return section
+  })
+  return withoutDuration
 }
 
 function snowflakeDataReducer(track, audioAnalysis, audioFeatures) {

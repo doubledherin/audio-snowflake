@@ -1057,33 +1057,13 @@ const snowflakeDataOfEvil = {
       "timeSignature": 4
     },
     {
-      "key": 2,
-      "mode": 1,
-      "timeSignature": 4
-    },
-    {
-      "key": 2,
-      "mode": 0,
-      "timeSignature": 4
-    },
-    {
-      "key": 2,
-      "mode": 0,
-      "timeSignature": 4
-    },
-    {
-      "key": 5,
-      "mode": 1,
-      "timeSignature": 4
-    },
-    {
       "key": 9,
       "mode": 0,
       "timeSignature": 4
     },
     {
       "key": 2,
-      "mode": 0,
+      "mode": 1,
       "timeSignature": 4
     }
   ],

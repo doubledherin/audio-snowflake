@@ -100,44 +100,24 @@ describe("The 'sectionsReducer' function", () => {
     const actual = sectionsReducer(sections)
     const expected = [
       {
-        key: sections[0].key,
-        mode: sections[0].mode,
-        timeSignature: sections[0].time_signature
+        "key": 2,
+        "mode": 0,
+        "timeSignature": 4
       },
       {
-        key: sections[1].key,
-        mode: sections[1].mode,
-        timeSignature: sections[1].time_signature
+        "key": 5,
+        "mode": 1,
+        "timeSignature": 4
       },
       {
-        key: sections[2].key,
-        mode: sections[2].mode,
-        timeSignature: sections[2].time_signature
+        "key": 9,
+        "mode": 0,
+        "timeSignature": 4
       },
       {
-        key: sections[3].key,
-        mode: sections[3].mode,
-        timeSignature: sections[3].time_signature
-      },
-      {
-        key: sections[4].key,
-        mode: sections[4].mode,
-        timeSignature: sections[4].time_signature
-      },
-      {
-        key: sections[5].key,
-        mode: sections[5].mode,
-        timeSignature: sections[5].time_signature
-      },
-      {
-        key: sections[6].key,
-        mode: sections[6].mode,
-        timeSignature: sections[6].time_signature
-      },
-      {
-        key: sections[7].key,
-        mode: sections[7].mode,
-        timeSignature: sections[7].time_signature
+        "key": 2,
+        "mode": 1,
+        "timeSignature": 4
       }
     ]
     expect(actual).toEqual(expected)
