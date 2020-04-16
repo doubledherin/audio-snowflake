@@ -1013,9 +1013,31 @@ const audioAnalysisOfEvil = {
   ]
 }
 
+const audioFeaturesOfEvil = {
+  "danceability": 0.497,
+  "energy": 0.738,
+  "key": 5,
+  "loudness": -4.09,
+  "mode": 1,
+  "speechiness": 0.0396,
+  "acousticness": 0.00128,
+  "instrumentalness": 0.653,
+  "liveness": 0.0725,
+  "valence": 0.599,
+  "tempo": 129.078,
+  "type": "audio_features",
+  "id": "6B182GP3TvEfmgUoIMVUSJ",
+  "uri": "spotify:track:6B182GP3TvEfmgUoIMVUSJ",
+  "track_href": "https://api.spotify.com/v1/tracks/6B182GP3TvEfmgUoIMVUSJ",
+  "analysis_url": "https://api.spotify.com/v1/audio-analysis/6B182GP3TvEfmgUoIMVUSJ",
+  "duration_ms": 215827,
+  "time_signature": 4
+}
+
 const snowflakeDataOfEvil = {
   "artist": tracks.evil.artists.map(_ => _.name).join(' & '),
   "duration": audioAnalysisOfEvil.track.duration,
+  "energy": audioFeaturesOfEvil.energy,
   "key": audioAnalysisOfEvil.track.key,
   "loudness": audioAnalysisOfEvil.track.loudness,
   "mode": audioAnalysisOfEvil.track.mode,
@@ -1064,7 +1086,8 @@ const snowflakeDataOfEvil = {
       "mode": 0,
       "timeSignature": 4
     }
-  ]
+  ],
+  "valence": audioFeaturesOfEvil.valence
 }
 
-module.exports = { tracks, audioAnalysisOfEvil, snowflakeDataOfEvil }
+module.exports = { tracks, audioAnalysisOfEvil, audioFeaturesOfEvil, snowflakeDataOfEvil }

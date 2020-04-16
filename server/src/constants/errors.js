@@ -7,6 +7,10 @@ const errors = {
     message: `Unable to find audio analysis`,
     code: 'AUDIO_ANALYSIS_NOT_FOUND'
   },
+  audioFeaturesNotFound: {
+    message: `Unable to find audio features`,
+    code: 'AUDIO_FEATURES_NOT_FOUND'
+  },
   invalidInput: {
     message: `User input must be provided`,
     code: 'INVALID_INPUT'

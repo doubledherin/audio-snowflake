@@ -4,7 +4,8 @@ const { ApolloError } = require('apollo-server')
 const { 
   errors: { 
     trackNotFound, 
-    audioAnalysisNotFound, 
+    audioAnalysisNotFound,
+    audioFeaturesNotFound, 
     invalidInput 
   } 
 } = require('../constants/errors')
@@ -27,13 +28,15 @@ class SpotifyWebAPI extends RESTDataSource {
     spotifyId = spotifyId || await this.getSpotifyId(title, artist)
     const track = await this.getTrackBySpotifyId(spotifyId)
     const audioAnalysis = await this.getAudioAnalysis(track.id)
-    return this.snowflakeDataReducer(track, audioAnalysis)
+    const audioFeatures = await this.getAudioFeatures(track.id)
+    return this.snowflakeDataReducer(track, audioAnalysis, audioFeatures)
   }
 
-  snowflakeDataReducer(track, audioAnalysis) {
+  snowflakeDataReducer(track, audioAnalysis, audioFeatures) {
     return {
       artist: track.artists.map(_ => _.name).join(' & '),
       duration: audioAnalysis.track.duration,
+      energy: audioFeatures.energy,
       key: audioAnalysis.track.key,
       loudness: audioAnalysis.track.loudness,
       mode: audioAnalysis.track.mode,
@@ -41,7 +44,8 @@ class SpotifyWebAPI extends RESTDataSource {
       tempo: audioAnalysis.track.tempo,
       timeSignature: audioAnalysis.track.time_signature,
       title: track.name,
-      sections: transformSections(audioAnalysis.sections)
+      sections: transformSections(audioAnalysis.sections),
+      valence: audioFeatures.valence
     }
   }
 
@@ -96,6 +100,14 @@ class SpotifyWebAPI extends RESTDataSource {
     const response = await this.get(`audio-analysis/${spotifyId}`)
     if (!response) {
       return new ApolloError(`${audioAnalysisNotFound.message} based on spotifyId: ${spotifyId}`, audioAnalysisNotFound.code)
+    }
+    return response
+  }
+
+  async getAudioFeatures(spotifyId) {
+    const response = await this.get(`audio-features/${spotifyId}`)
+    if (!response) {
+      return new ApolloError(`${audioFeaturesNotFound.message} based on spotifyId: ${spotifyId}`, audioFeaturesNotFound.code)
     }
     return response
   }
