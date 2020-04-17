@@ -88,9 +88,13 @@ function sortSections(sections) {
   return withoutDuration
 }
 
+function cleanString(s) {
+  return s.replace(/\"/g, "\'")
+}
+
 function snowflakeDataReducer(track, audioAnalysis, audioFeatures) {
   return {
-    artist: track.artists.map(_ => _.name).join(' & '),
+    artist: cleanString(track.artists.map(_ => _.name).join(' & ')),
     duration: audioAnalysis.track.duration,
     energy: audioFeatures.energy,
     key: audioAnalysis.track.key,
@@ -99,7 +103,7 @@ function snowflakeDataReducer(track, audioAnalysis, audioFeatures) {
     spotifyId: track.id,
     tempo: audioAnalysis.track.tempo,
     timeSignature: audioAnalysis.track.time_signature,
-    title: track.name,
+    title: cleanString(track.name),
     sections: sectionsReducer(audioAnalysis.sections),
     valence: audioFeatures.valence
   }
