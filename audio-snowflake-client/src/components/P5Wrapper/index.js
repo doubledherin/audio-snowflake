@@ -5,12 +5,12 @@ import sketch from "./sketches/snowflake.js"
 
 class P5Wrapper extends Component {
   static propTypes = {
-    onReady: PropTypes.func.isRequired,
+    // onReady: PropTypes.func.isRequired,
   }
 
   componentDidMount() {
     this.canvas = new window.p5(sketch, "p5-canvas")
-    this.canvas.setOnReady(this.props.onReady)
+    // this.canvas.setOnReady(this.props.onReady)
   }
 
   componentWillReceiveProps(nextProps) {
