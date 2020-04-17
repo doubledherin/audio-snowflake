@@ -72,7 +72,7 @@ function sectionsCollapser(sections) {
 // Sorts sections by duration, in descending order
 // then removes the 'duration' key, which is no longer needed.
 function sortSections(sections) {
-  const sorted = sections.sort((sectionA, sectionB) => {
+  return sorted = sections.sort((sectionA, sectionB) => {
     if (sectionA.duration > sectionB.duration) {
       return -1
     }
@@ -81,11 +81,6 @@ function sortSections(sections) {
     }
     return 0
   })
-  const withoutDuration = sorted.map(section => {
-    delete section.duration
-    return section
-  })
-  return withoutDuration
 }
 
 function cleanString(s) {

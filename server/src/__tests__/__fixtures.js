@@ -1047,21 +1047,25 @@ const snowflakeDataOfEvil = {
   "title": tracks.evil.name,
   "sections": [
     {
+      "duration": 114.55547,
       "key": 2,
       "mode": 0,
       "timeSignature": 4
     },
     {
+      "duration": 54.50943,
       "key": 5,
       "mode": 1,
       "timeSignature": 4
     },
     {
+      "duration": 34.94031,
       "key": 9,
       "mode": 0,
       "timeSignature": 4
     },
     {
+      "duration": 11.82147,
       "key": 2,
       "mode": 1,
       "timeSignature": 4

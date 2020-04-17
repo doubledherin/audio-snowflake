@@ -96,30 +96,8 @@ describe('[SpotifyWebAPI.snowflakeDataReducer]', () => {
 
 describe("The 'sectionsReducer' function", () => {
   test("works as expected", () => {
-    const { sections } = audioAnalysisOfEvil
-    const actual = sectionsReducer(sections)
-    const expected = [
-      {
-        "key": 2,
-        "mode": 0,
-        "timeSignature": 4
-      },
-      {
-        "key": 5,
-        "mode": 1,
-        "timeSignature": 4
-      },
-      {
-        "key": 9,
-        "mode": 0,
-        "timeSignature": 4
-      },
-      {
-        "key": 2,
-        "mode": 1,
-        "timeSignature": 4
-      }
-    ]
+    const actual = sectionsReducer(audioAnalysisOfEvil.sections)
+    const expected = snowflakeDataOfEvil.sections
     expect(actual).toEqual(expected)
   })
 })
