@@ -1047,28 +1047,32 @@ const snowflakeDataOfEvil = {
   "title": tracks.evil.name,
   "sections": [
     {
-      "duration": 114.55547,
-      "key": 2,
-      "mode": 0,
-      "timeSignature": 4
+      duration: 114.55547,
+      loudness: -25.37,
+      key: 2,
+      mode: 0,
+      timeSignature: 4
     },
     {
-      "duration": 54.50943,
-      "key": 5,
-      "mode": 1,
-      "timeSignature": 4
+      duration: 54.50943,
+      loudness: -8.135,
+      key: 5,
+      mode: 1,
+      timeSignature: 4
     },
     {
-      "duration": 34.94031,
-      "key": 9,
-      "mode": 0,
-      "timeSignature": 4
+      duration: 34.94031,
+      loudness: -5.273,
+      key: 9,
+      mode: 0,
+      timeSignature: 4
     },
     {
-      "duration": 11.82147,
-      "key": 2,
-      "mode": 1,
-      "timeSignature": 4
+      duration: 11.82147,
+      loudness: -4.876,
+      key: 2,
+      mode: 1,
+      timeSignature: 4
     }
   ],
   "valence": audioFeaturesOfEvil.valence

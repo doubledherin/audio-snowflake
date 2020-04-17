@@ -26,6 +26,7 @@ const typeDefs = gql`
   type Section {
     duration: Float
     key: Int
+    loudness: Float
     mode: Int
     timeSignature: Int
   }

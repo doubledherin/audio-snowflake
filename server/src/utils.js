@@ -47,6 +47,7 @@ function sectionsReducer(sections) {
   const composed = sections.map(section => {
     return {
       duration: section.duration,
+      loudness: section.loudness,
       key: section.key,
       mode: section.mode,
       timeSignature: section.time_signature
