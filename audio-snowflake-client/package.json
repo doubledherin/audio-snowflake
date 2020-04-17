@@ -17,7 +17,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest --verbose",
+    "test:watch": "npm run test -- --watch",
+    "test:coverage": "npm run test -- --coverage",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -36,6 +38,18 @@
     ]
   },
   "devDependencies": {
-    "apollo": "^2.27.0"
+    "@babel/preset-env": "^7.9.5",
+    "apollo": "^2.27.0",
+    "babel-jest": "^25.3.0",
+    "jest": "^25.3.0"
+  },
+  "jest": {
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "__fixtures"
+    ],
+    "coverageReporters": [
+      "html"
+    ]
   }
 }
