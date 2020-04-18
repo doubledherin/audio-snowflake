@@ -1,5 +1,5 @@
 body {
-  background-color: #000000;
+  background-color: #61dafb;
 }
 .App {
   text-align: center;
@@ -17,6 +17,8 @@ body {
   canvas {
     animation: canvas-spin infinite 20s linear;
     border: solid white;
+    background-color: black;
+    margin: 200px;
   }
 }
 
@@ -28,6 +30,7 @@ body {
   justify-content: center;
   font-size: calc(1vmin);
   color: white;
+  background-color: blueviolet;
 }
 
 .App-link {
