@@ -51,7 +51,6 @@ export default function sketch(p) {
     hypotrochoids = snowflakeDataOfEvil.sections.map(section => {
       return getHypotrochoid(duration, energy, valence, section)
     })
-    console.log("HYPOS: ", hypotrochoids)
   }
 
   // draw() --------------------------------------------------------------------
@@ -61,6 +60,11 @@ export default function sketch(p) {
       const { statorRadius, rotorRadius, penDistance, hue, saturation, brightness, opacity } = hypotrochoids[i]
       hypotrochoid(statorRadius, rotorRadius, penDistance, hue, saturation, brightness, opacity)
     }
+  }
+
+  p.windowResized = function() {
+    canvasWidth = p.min(p.windowWidth, p.windowHeight) - 200
+    p.resizeCanvas(canvasWidth, canvasWidth);
   }
 
   function hypotrochoid(statorRadius, rotorRadius, penDistance, hue, saturation, brightness, opacity) {
