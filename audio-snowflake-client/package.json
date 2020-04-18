@@ -18,7 +18,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "jest --verbose",
-    "test:watch": "npm run test -- --watch",
+    "test:watch": "npm run test -- --watch --verbose",
     "test:coverage": "npm run test -- --coverage",
     "eject": "react-scripts eject"
   },
@@ -39,9 +39,7 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.9.5",
-    "apollo": "^2.27.0",
-    "babel-jest": "^25.3.0",
-    "jest": "^25.3.0"
+    "apollo": "^2.27.0"
   },
   "jest": {
     "testPathIgnorePatterns": [
