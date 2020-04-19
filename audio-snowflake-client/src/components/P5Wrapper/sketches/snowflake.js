@@ -1,15 +1,6 @@
 import { getHypotrochoid } from '../../../utils'
 import { snowflakeDataOfEvil } from '../../../__fixtures'
 
-
-// TODO:
-// * Figure out how to center snowflake on canvas
-// * Figure out how to constrain snowflake size to canvas size using the 'select' function
-// * Use createGraphics so that redraw doesn't occur upon resizing
-// * Do input form
-// * Do rest of UI, maybe with Bootstrap
-// * Do legend
-// * Connect with Apollo
 /* globals */
 
 export default function sketch(p) {

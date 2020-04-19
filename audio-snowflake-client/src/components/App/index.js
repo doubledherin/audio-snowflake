@@ -2,6 +2,10 @@ import React, { Component } from 'react'
 import P5Wrapper from "../P5Wrapper/"
 import logo from '../../logo.svg'
 import './index.css'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Header from '../Header'
+import InputForm from '../InputForm'
+import Player from '../Player'
 
 export default class App extends Component {
   constructor() {
@@ -16,14 +20,10 @@ export default class App extends Component {
   render() {
     return  (
       <div className="App">
-        <header className="App-header">
-          Audio Snowflake Header
-        </header>
-        <P5Wrapper
-              className="P5-wrapper"
-              {...this.state.p5Props}
-              onReady={this.onReady}
-            />
+        <Header />
+        <P5Wrapper className="P5-wrapper" />
+        <InputForm />
+        <Player />
       </div>
     )
   }

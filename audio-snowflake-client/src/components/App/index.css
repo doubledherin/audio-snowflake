@@ -33,20 +33,6 @@ body {
   }
 }
 
-.App-header {
-  min-height: 5vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(1vmin);
-  color: white;
-  background-color: blueviolet;
-}
-
-.App-link {
-  color: #61dafb;
-}
 
 @keyframes App-logo-spin {
   from {
