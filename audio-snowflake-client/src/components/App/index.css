@@ -1,5 +1,16 @@
+html, body {
+  height: 100%;
+}
 body {
   background-color: #61dafb;
+  margin: 0;
+  display: flex;
+
+  /* This centers our sketch horizontally. */
+  justify-content: center;
+
+  /* This centers our sketch vertically. */
+  align-items: center;
 }
 .App {
   text-align: center;
@@ -18,7 +29,7 @@ body {
     animation: canvas-spin infinite 20s linear;
     border: solid white;
     background-color: black;
-    margin: 200px;
+    border-radius: 50%;
   }
 }
 

@@ -1,6 +1,15 @@
 import { getHypotrochoid } from '../../../utils'
 import { snowflakeDataOfEvil } from '../../../__fixtures'
 
+
+// TODO:
+// * Figure out how to center snowflake on canvas
+// * Figure out how to constrain snowflake size to canvas size using the 'select' function
+// * Use createGraphics so that redraw doesn't occur upon resizing
+// * Do input form
+// * Do rest of UI, maybe with Bootstrap
+// * Do legend
+// * Connect with Apollo
 /* globals */
 
 export default function sketch(p) {
@@ -9,7 +18,7 @@ export default function sketch(p) {
   // Private members -----------------------------------------------------------
   
   let hypotrochoids = []
-  let angle = 45.0
+  let angle = 0.0
   let canvasWidth
 
   class Pattern {
@@ -36,15 +45,19 @@ export default function sketch(p) {
   // Make async calls to server here
   // preload() -----------------------------------------------------------------
   p.preload = function() {}
+  
 
   // setup() -------------------------------------------------------------------
   p.setup = function() {
     // console.log("::: setup() props:", props)
-    canvasWidth = p.min(p.windowWidth, p.windowHeight) - 100
+    canvasWidth = p.min(p.windowWidth, p.windowHeight) - 10
     p.createCanvas(canvasWidth, canvasWidth)
     p.smooth()
-    p.translate(p.width/2.0, p.width/2.0)
+    // p.translate(p.width/2.0, p.width/2.0)
     p.ellipseMode(p.CENTER)
+        let widthOfCanvas = p.select("canvas").style("width")
+    console.log("Width of canvas: ", widthOfCanvas)
+
     
     const { duration, energy, valence } = snowflakeDataOfEvil
     
@@ -55,6 +68,8 @@ export default function sketch(p) {
 
   // draw() --------------------------------------------------------------------
   p.draw = function() {
+    p.colorMode(p.HSB)
+
     // console.log("::: draw() props:", props)
     for (let i = 0; i < hypotrochoids.length; i++) {
       const { statorRadius, rotorRadius, penDistance, hue, saturation, brightness, opacity } = hypotrochoids[i]
@@ -63,15 +78,18 @@ export default function sketch(p) {
   }
 
   p.windowResized = function() {
-    canvasWidth = p.min(p.windowWidth, p.windowHeight) - 200
+    canvasWidth = p.min(p.windowWidth, p.windowHeight)
     p.resizeCanvas(canvasWidth, canvasWidth);
   }
 
   function hypotrochoid(statorRadius, rotorRadius, penDistance, hue, saturation, brightness, opacity) {
     let x = ((statorRadius - rotorRadius) * Math.cos(angle)) + (penDistance * Math.cos(((statorRadius - rotorRadius) / rotorRadius) * angle)) + 300
     let y = ((statorRadius - rotorRadius) * Math.sin(angle)) - (penDistance * Math.sin(((statorRadius - rotorRadius) / rotorRadius) * angle)) + 300
+    p.noStroke()
     p.stroke(hue, saturation, brightness, opacity)
-    p.ellipse(x, y, 1, 1)
+    // p.scale(.4)
+    p.ellipse(x, y, 2, 2)
+    // p.scale(2.5)
     angle += 0.00111
   }
 }

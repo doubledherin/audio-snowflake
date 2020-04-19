@@ -17,7 +17,7 @@ export const maxHue = 330
 export const minSumOfEnergyAndValence = 0  // Energy and valence are each scales of 0 to 1, so the max sum of the two is 2
 export const maxSumOfEnergyAndValence = 2
 export const minSaturation = 0
-export const maxSaturation = 40 // 40 for aesthetics
+export const maxSaturation = 100 // 40 for aesthetics
 
 export const maxBrightness = 100
 
