@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap'
 
-export default class Header extends Component {
+export default class Navigation extends Component {
   render() {
     return  (
-      <Navbar bg="dark" variant="dark" expand="lg" fixed="top">
+      <Navbar bg="black" variant="dark" expand="lg" fixed="top">
         <Navbar.Brand href="#home">Audio Snowflake</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">

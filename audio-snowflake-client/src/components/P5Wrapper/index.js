@@ -27,10 +27,7 @@ class P5Wrapper extends Component {
 
   render() {
     return (
-      <div
-        id="p5-canvas"
-        style={{ width: "100%", textAlign: "center" }}
-      />
+      <div id="p5-canvas" />
     )
   }
 }

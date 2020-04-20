@@ -10,6 +10,7 @@ export default function sketch(p) {
   
   let hypotrochoids = []
   let angle = 0.0
+  let canvas
   let canvasWidth
 
   class Pattern {
@@ -42,14 +43,8 @@ export default function sketch(p) {
   p.setup = function() {
     // console.log("::: setup() props:", props)
     canvasWidth = p.min(p.windowWidth, p.windowHeight) - 10
-    p.createCanvas(canvasWidth, canvasWidth)
+    canvas = p.createCanvas(canvasWidth, canvasWidth)
     p.smooth()
-    // p.translate(p.width/2.0, p.width/2.0)
-    p.ellipseMode(p.CENTER)
-        let widthOfCanvas = p.select("canvas").style("width")
-    console.log("Width of canvas: ", widthOfCanvas)
-
-    
     const { duration, energy, valence } = snowflakeDataOfEvil
     
     hypotrochoids = snowflakeDataOfEvil.sections.map(section => {
