@@ -42,7 +42,7 @@ export default function sketch(p) {
   // setup() -------------------------------------------------------------------
   p.setup = function() {
     // console.log("::: setup() props:", props)
-    canvasWidth = p.min(p.windowWidth, p.windowHeight) - 10
+    canvasWidth = p.min(p.windowWidth, p.windowHeight) - 200
     canvas = p.createCanvas(canvasWidth, canvasWidth)
     p.smooth()
     const { duration, energy, valence } = snowflakeDataOfEvil
@@ -71,6 +71,7 @@ export default function sketch(p) {
   function hypotrochoid(statorRadius, rotorRadius, penDistance, hue, saturation, brightness, opacity) {
     let x = ((statorRadius - rotorRadius) * Math.cos(angle)) + (penDistance * Math.cos(((statorRadius - rotorRadius) / rotorRadius) * angle)) + 300
     let y = ((statorRadius - rotorRadius) * Math.sin(angle)) - (penDistance * Math.sin(((statorRadius - rotorRadius) / rotorRadius) * angle)) + 300
+    p.translate(0, 0)
     p.noStroke()
     p.stroke(hue, saturation, brightness, opacity)
     // p.scale(.4)

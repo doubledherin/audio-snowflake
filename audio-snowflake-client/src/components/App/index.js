@@ -19,7 +19,7 @@ export default class App extends Component {
   }
   render() {
     return  (
-      <div className="App bg-black">
+      <div className="App bg-black container-fluid">
         <Navigation />
         <div id="main">
           <P5Wrapper className="P5-wrapper" />
