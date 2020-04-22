@@ -1,6 +1,6 @@
 import { snowflakeDataOfEvil } from './__fixtures'
 
-const { getHypotrochoid } = require('./utils')
+const { getHypotrochoid } = require('../utils')
 
 describe("The 'getHypotrochoid' function", () => {
   const { duration, energy, valence } = snowflakeDataOfEvil
@@ -11,7 +11,7 @@ describe("The 'getHypotrochoid' function", () => {
       rotorRadius: 493.2090058058524,
       penDistance: 99.45233019414758,
       hue: 60,
-      saturation: 26.74,
+      saturation: 66.85,
       brightness: 100,
       opacity: 0.5
     }

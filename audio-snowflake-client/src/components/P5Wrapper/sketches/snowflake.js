@@ -1,5 +1,5 @@
 import { getHypotrochoid } from '../../../utils'
-import { snowflakeDataOfEvil } from '../../../__fixtures'
+import { snowflakeDataOfEvil } from '../../../tests/__fixtures'
 
 /* globals */
 
