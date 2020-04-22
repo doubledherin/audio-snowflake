@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import PropTypes from "prop-types"
+// import PropTypes from "prop-types"
 
 import sketch from "./sketches/snowflake.js"
 
@@ -12,13 +12,13 @@ class P5Wrapper extends Component {
     this.canvas = new window.p5(sketch, "p5-canvas")
     // this.canvas.setOnReady(this.props.onReady)
   }
-
-  componentWillReceiveProps(nextProps) {
-    this.canvas.pushProps(nextProps)
-  }
-
+  
   shouldComponentUpdate() {
     return false
+  }
+
+  componentDidUpdate(nextProps) {
+    this.canvas.pushProps(nextProps)
   }
 
   componentWillUnmount() {

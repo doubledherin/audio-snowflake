@@ -10,28 +10,27 @@ export default function sketch(p) {
   
   let hypotrochoids = []
   let angle = 0.0
-  let canvas
   let canvasWidth
 
-  class Pattern {
-    constructor() {
-      this.colorMode = (p.HSB)
-    }
-  }
+  // class Pattern {
+  //   constructor() {
+  //     this.colorMode = (p.HSB)
+  //   }
+  // }
   
   // Private classes -----------------------------------------------------------
-  class Hypotrochoid extends Pattern {
-    constructor(statorRadius, rotorRadius, distanceFromRotorCenter, hue, saturation, brightness, opacity) {
-      super()
-      this.statorRadius = statorRadius
-      this.rotorRadius = rotorRadius
-      this.distanceFromRotorCenter = distanceFromRotorCenter
-      this.hue = hue
-      this.saturation = saturation
-      this.brightness = brightness
-      this.opacity = opacity
-    }
-  }
+  // class Hypotrochoid extends Pattern {
+  //   constructor(statorRadius, rotorRadius, distanceFromRotorCenter, hue, saturation, brightness, opacity) {
+  //     super()
+  //     this.statorRadius = statorRadius
+  //     this.rotorRadius = rotorRadius
+  //     this.distanceFromRotorCenter = distanceFromRotorCenter
+  //     this.hue = hue
+  //     this.saturation = saturation
+  //     this.brightness = brightness
+  //     this.opacity = opacity
+  //   }
+  // }
 
   // Lifecycle methods =========================================================
   // Make async calls to server here
@@ -43,7 +42,7 @@ export default function sketch(p) {
   p.setup = function() {
     // console.log("::: setup() props:", props)
     canvasWidth = p.min(p.windowWidth, p.windowHeight) - 200
-    canvas = p.createCanvas(canvasWidth, canvasWidth)
+    p.createCanvas(canvasWidth, canvasWidth)
     p.smooth()
     const { duration, energy, valence } = snowflakeDataOfEvil
     

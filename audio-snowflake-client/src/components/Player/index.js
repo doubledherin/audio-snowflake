@@ -6,7 +6,7 @@ export default class Player extends Component {
     const src = `https://embed.spotify.com/?uri=${uri}`
     return  (
       <div>
-        <iframe src={src} width="250" height="80" frameBorder="0" allowtransparency="false"></iframe>
+        <iframe src={src} width="250" height="80" frameBorder="0" allowtransparency="false" title="Embedded Spotify Player"></iframe>
       </div>
     )
   }
