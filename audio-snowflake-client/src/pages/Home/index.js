@@ -55,9 +55,9 @@ const Home = ({ spotifyId }) => {
   }
   return (
     <Fragment>
-      { data && data.snowflakeData && (
-        <P5Wrapper className="P5-wrapper" snowflakeData={data.snowflakeData} />
-      )}
+      { data && data.snowflakeData &&
+        <P5Wrapper snowflakeData={data.snowflakeData} />
+      }
       <InputForm />
       <Player />
     </Fragment>
