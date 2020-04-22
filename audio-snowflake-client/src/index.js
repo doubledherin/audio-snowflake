@@ -3,15 +3,17 @@ import ReactDOM from 'react-dom'
 import { ApolloClient } from 'apollo-client'
 import { HttpLink } from 'apollo-link-http'
 import { ApolloProvider } from 'react-apollo'
-import { InMemoryCache } from 'apollo-cache-inmemory'
-
+import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory'
+import introspectionQueryResultData from './fragmentTypes.json'
 
 import './index.scss'
 import App from './components/App'
 import * as serviceWorker from './serviceWorker'
 
-
-const cache = new InMemoryCache()
+const fragmentMatcher = new IntrospectionFragmentMatcher({
+  introspectionQueryResultData
+})
+const cache = new InMemoryCache({ fragmentMatcher })
 const link = new HttpLink({
   uri: 'http://localhost:4000/',
   headers: {

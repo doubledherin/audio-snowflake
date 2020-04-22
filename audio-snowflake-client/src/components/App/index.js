@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
-import P5Wrapper from "../P5Wrapper/"
+
+import Home from '../../pages/Home'
 import './index.scss'
-// import Navigation from '../Navigation'
-// import InputForm from '../InputForm'
-import Player from '../Player'
 
 export default class App extends Component {
   
@@ -11,8 +9,7 @@ export default class App extends Component {
     return  (
       <div className="App bg-black container-fluid">
         <div id="main">
-          <P5Wrapper className="P5-wrapper" />
-          <Player />
+          <Home />
         </div>
       </div>
     )
