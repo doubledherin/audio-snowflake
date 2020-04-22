@@ -2,7 +2,8 @@ import React, { Fragment } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import gql from 'graphql-tag'
 
-import P5Wrapper from "../../components/P5Wrapper/"
+import InputForm from '../../components/InputForm'
+import P5Wrapper from '../../components/P5Wrapper'
 import Player from '../../components/Player'
 
 const GET_SNOWFLAKE_DATA = gql`
@@ -57,6 +58,7 @@ const Home = ({ spotifyId }) => {
       { data && data.snowflakeData && (
         <P5Wrapper className="P5-wrapper" snowflakeData={data.snowflakeData} />
       )}
+      <InputForm />
       <Player />
     </Fragment>
   );
