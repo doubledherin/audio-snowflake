@@ -43,30 +43,21 @@ const Home = ({ spotifyId }) => {
     data, 
     loading, 
     error
-  } = useQuery(GET_SNOWFLAKE_DATA, { variables: { input: { spotifyId: "3JIxjvbbDrA9ztYlNcp3yL" } } } ) // TODO: Remove hardcoded track id
-  console.log("DATA:", data)
-  console.log("LOADING:", loading)
-  console.log("ERROR:", error)
+  } = useQuery(GET_SNOWFLAKE_DATA, { variables: { input: { spotifyId: "6B182GP3TvEfmgUoIMVUSJ" } } } ) // TODO: Remove hardcoded spotifyId and use actual input
+  
+  if (loading) return <p>LOADING</p>
+  if (error) return <p>ERROR</p>
+  if (!data) return <p>Not found</p>
 
-  // if (loading) return <p>LOADING</p>;
-  // if (error) return <p>ERROR</p>;
-  // if (!data) return <p>Not found</p>;
-
+  if (data && data.snowflakeData) {
+    console.log("Snowflake data: ", data.snowflakeData)
+  }
   return (
     <Fragment>
-      <P5Wrapper className="P5-wrapper" />
+      { data && data.snowflakeData && (
+        <P5Wrapper className="P5-wrapper" snowflakeData={data.snowflakeData} />
+      )}
       <Player />
-{/* 
-      {data && (
-          <Button
-            onClick={() =>
-              console.log("Audio Analysis: ", data.audioAnalysis)
-            }
-          >
-            Log Audio Analysis
-          </Button>
-        ) */}
-      }
     </Fragment>
   );
 }
