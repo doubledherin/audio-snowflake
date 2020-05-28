@@ -12,18 +12,15 @@ const Home = ({ spotifyId }) => {
     loading, 
     error
   } = useQuery(getSnowflakeData, { variables: { input: { spotifyId: "6B182GP3TvEfmgUoIMVUSJ" } } } ) // TODO: Remove hardcoded spotifyId and use actual input
-  
+
   if (loading) return <p>LOADING</p>
   if (error) return <p>ERROR</p>
   if (!data) return <p>Not found</p>
 
-  if (data && data.snowflakeData) {
-    console.log("Snowflake data: ", data.snowflakeData)
-  }
   return (
     <Fragment>
       { data && data.snowflakeData &&
-        <P5Wrapper snowflakeData={data.snowflakeData} />
+        <P5Wrapper p5Props={data.snowflakeData} />
       }
       <InputForm />
       <Player />
