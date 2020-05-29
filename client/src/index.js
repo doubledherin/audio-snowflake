@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import { ApolloClient } from 'apollo-client'
 import { HttpLink } from 'apollo-link-http'
 import { ApolloProvider } from 'react-apollo'
+import { setContext } from 'apollo-link-context'
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory'
 import introspectionQueryResultData from './fragmentTypes.json'
 
@@ -14,16 +15,23 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
   introspectionQueryResultData
 })
 const cache = new InMemoryCache({ fragmentMatcher })
-const link = new HttpLink({
-  uri: 'http://localhost:4000/',
-  headers: {
-    authorization: localStorage.getItem('token'),
-  },
+
+const authLink = setContext((_,  { headers }) => {
+  const token = localStorage.getItem('token')
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : ""
+    }
+  }
+})
+const httpLink = new HttpLink({
+  uri: 'http://localhost:4000/'
 })
 
 const client = new ApolloClient({
   cache,
-  link,
+  link: authLink.concat(httpLink),
 })
 
 cache.writeData({
