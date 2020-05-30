@@ -55,4 +55,3 @@ function getStrokeValues(trackEnergy, trackValence, section) {
   
   return { hue, saturation, brightness, opacity }
 }
-

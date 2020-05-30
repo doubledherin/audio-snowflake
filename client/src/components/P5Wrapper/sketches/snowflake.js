@@ -4,7 +4,6 @@ import { snowflakeDataOfEvil } from '../../../tests/__fixtures'
 /* globals */
 
 export default function sketch(p) {
-  console.log("SKETCH P", p)
 
   p.onSetAppState = () => {}
   // Methods -------------------------------------------------------------------
@@ -44,7 +43,7 @@ export default function sketch(p) {
 
   // setup() -------------------------------------------------------------------
   p.setup = function() {
-    console.log("::: setup() p:", p)
+    // console.log("::: setup() p:", p)
     canvasWidth = p.min(p.windowWidth, p.windowHeight) - 200
     p.createCanvas(canvasWidth, canvasWidth)
     p.smooth()

@@ -25,7 +25,7 @@ const Home = ({ spotifyId }) => {
       <InputForm />
       <Player />
     </Fragment>
-  );
+  )
 }
 
 export default Home
