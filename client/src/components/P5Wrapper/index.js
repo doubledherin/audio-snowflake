@@ -23,10 +23,6 @@ class P5Wrapper extends Component {
     this.canvas.pushProps(nextProps.p5Props)
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.canvas.pushProps(nextProps);
-  }
-
   componentWillUnmount() {
     this.canvas.remove()
   }
