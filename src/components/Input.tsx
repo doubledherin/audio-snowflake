@@ -5,15 +5,18 @@ const Input = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const response = await fetch("http://localhost:3000/run-token-script", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ trackId }),
-    });
-    // debugger;
+    const response = await fetch(
+      `http://localhost:3000/get-track-info?trackId=${trackId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
     const result = await response.json();
+
     console.log(result);
   };
 

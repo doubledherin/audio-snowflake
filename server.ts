@@ -63,6 +63,46 @@ app.post("/run-token-script", async (_, res) => {
   }
 });
 
+app.get("/get-track-info", async (req, res) => {
+  const trackId = req.query.trackId;
+  if (!trackId) {
+    res.status(400).json({ error: "trackId is required" });
+    return;
+  }
+
+  let accessToken = "";
+  let tokenExpiryTime = 0;
+
+  if (!accessToken || Date.now() >= tokenExpiryTime) {
+    try {
+      accessToken = await getToken();
+      const tokenData = JSON.parse(fs.readFileSync(tokenFilePath, "utf-8"));
+      accessToken = tokenData.accessToken;
+      tokenExpiryTime = tokenData.tokenExpiryTime;
+    } catch (error) {
+      console.error("Error getting token:", error);
+      res.status(500).json({ error: "Failed to get token" });
+      return;
+    }
+  }
+
+  try {
+    const response = await fetch(
+      `https://api.spotify.com/v1/tracks/${trackId}`,
+      {
+        method: "GET",
+        headers: { Authorization: "Bearer " + accessToken },
+      }
+    );
+
+    const data = await response.json();
+    res.json(data);
+  } catch (error) {
+    console.error("Error getting track info:", error);
+    res.status(500).json({ error: "Failed to get track info" });
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
