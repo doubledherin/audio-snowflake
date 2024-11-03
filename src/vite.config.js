@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      "/run-token-script": "http://localhost:3000",
+      "/get-token": "http://localhost:3000",
     },
   },
 });
