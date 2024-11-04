@@ -7,9 +7,9 @@ const Input = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const response = await fetch(
-      `http://localhost:3000/get-audio-features?trackName=${trackName}&trackArtist=${trackArtist}`,
+      `http://localhost:3000/get-track-data?trackName=${trackName}&trackArtist=${trackArtist}`,
       {
-        method: "POST",
+        method: "POST", // CHANGE TO GET?
         headers: {
           "Content-Type": "application/json",
         },
