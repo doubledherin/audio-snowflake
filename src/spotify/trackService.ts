@@ -19,4 +19,22 @@ async function getTrackId(trackName: String, trackArtist: String) {
   }
 }
 
-export { getTrackId };
+async function getTrackAudioFeatures(trackId: String) {
+  const accessToken = await getToken();
+
+  try {
+    const response = await fetch(
+      `https://api.spotify.com/v1/audio-features/${trackId}`,
+      {
+        method: "GET",
+        headers: { Authorization: "Bearer " + accessToken },
+      }
+    );
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error getting audio features:", error);
+  }
+}
+
+export { getTrackId, getTrackAudioFeatures };

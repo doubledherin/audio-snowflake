@@ -3,7 +3,7 @@ import pkg from "body-parser";
 import dotenv from "dotenv";
 import cors from "cors";
 import { getToken } from "./src/spotify/tokenService";
-import { getTrackId } from "./src/spotify/trackService";
+import { getTrackId, getTrackAudioFeatures } from "./src/spotify/trackService";
 
 dotenv.config();
 
@@ -31,16 +31,8 @@ app.post("/get-audio-features", async (req, res) => {
 
   // Use trackId to get audio features from Spotify
   try {
-    const accessToken = await getToken();
-    const response = await fetch(
-      `https://api.spotify.com/v1/audio-features/${trackId}`,
-      {
-        method: "GET",
-        headers: { Authorization: "Bearer " + accessToken },
-      }
-    );
-    const data = await response.json();
-    res.json(data);
+    const audioFeatures = await getTrackAudioFeatures(trackId);
+    res.json(audioFeatures);
   } catch (error) {
     console.error("Error getting audio features:", error);
     res.status(500).json({ error: "Failed to get audio features" });
