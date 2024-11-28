@@ -4,25 +4,21 @@ let width, height;
 
 // FUNCTION CALLS
 function setup() {
-  createCanvas(windowWidth, windowHeight);
-  width = min(windowWidth, windowHeight) - 50;
-  resizeCanvas(width, width);
-  translate(width / 2.0, width / 2.0);
+  createCanvas(windowWidth, windowHeight, WEBGL);
   frameRate(100);
-  ellipseMode(CENTER);
-  // colorMode(HSB);
-  colorMode(HSB, 360, 100, 100, 100);
+  colorMode(HSB);
   background(0);
-  smooth();
 
   // Set up some hypotrochoids
   // TO DO: Stop hardcoding this data
-  setUpHypotrochoid(1000, 50, 30, 200, 100, 100, 100);
-  setUpHypotrochoid(800, 40, 20, 100, 80, 90, 90);
+  setUpHypotrochoid(1000, 50, 30, 0, 100, 100, 100);
+  setUpHypotrochoid(800, 50, 30, 50, 100, 100, 100);
+  setUpHypotrochoid(600, 50, 30, 75, 100, 100, 100);
+  setUpHypotrochoid(400, 50, 30, 100, 100, 100, 100);
+  setUpHypotrochoid(300, 50, 30, 0, 0, 100, 100);
 }
 
 function draw() {
-  translate(width / 2.0, height / 2.0);
   for (let i = 0; i < hypotrochoids.length; i++) {
     let h = hypotrochoids[i];
     h.draw();

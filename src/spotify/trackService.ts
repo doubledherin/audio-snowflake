@@ -2,14 +2,14 @@ import { getToken } from "./tokenService";
 
 // TO DO: https://developer.spotify.com/blog/2023-07-03-typescript-sdk
 
-// TO DO: Move these types elsewhere
-interface AudioFeatures {
-  // Define the properties of the audio features
-}
+// // TO DO: Move these types elsewhere
+// interface AudioFeatures {
+//   // Define the properties of the audio features
+// }
 
-interface AudioAnalysis {
-  // Define the properties of the audio analysis
-}
+// interface AudioAnalysis {
+//   // Define the properties of the audio analysis
+// }
 
 async function getTrackId(trackName: String, trackArtist: String) {
   const accessToken = await getToken();
